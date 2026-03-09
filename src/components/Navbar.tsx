@@ -20,12 +20,13 @@ export function Navbar() {
         {/* Logo */}
         <a
           href="https://urantia.dev"
-          className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-gray-900 dark:text-white"
+          className="flex items-center gap-2"
         >
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-white">
-            U
-          </span>
-          urantia.dev
+          <img
+            src="/logo.svg"
+            alt="urantia.dev"
+            className="h-7 w-auto"
+          />
         </a>
 
         {/* Desktop links */}
