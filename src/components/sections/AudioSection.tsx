@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { getAudio, getParagraphContext } from "@/lib/api";
+import { getSpotifyUrl } from "@/lib/spotify";
 
 const PRESETS = [
   { label: "The Father's Love", ref: "2:5.10" },
@@ -28,6 +29,8 @@ export function AudioSection() {
   const [voices, setVoices] = useState<Record<string, AudioEntry>>({});
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [paperId, setPaperId] = useState<string | null>(null);
+  const [paperTitle, setPaperTitle] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -43,6 +46,8 @@ export function AudioSection() {
     setAudioUrl(null);
     setVoices({});
     setSelectedVoice("");
+    setPaperId(null);
+    setPaperTitle(null);
 
     try {
       const [audioRes, contextRes] = await Promise.all([
@@ -55,9 +60,13 @@ export function AudioSection() {
       if (target) {
         setPassageText(target.text);
         setPassageRef(target.standardReferenceId || ref);
+        setPaperId(target.paperId || null);
+        setPaperTitle(target.paperTitle || null);
       } else {
         setPassageText(null);
         setPassageRef(ref);
+        setPaperId(null);
+        setPaperTitle(null);
       }
 
       // Parse audio voices
@@ -111,6 +120,7 @@ export function AudioSection() {
   }
 
   const voiceKeys = Object.keys(voices);
+  const spotifyUrl = paperId ? getSpotifyUrl(paperId) : null;
 
   return (
     <div className="space-y-6">
@@ -121,7 +131,7 @@ export function AudioSection() {
           value={inputRef}
           onChange={(e) => setInputRef(e.target.value)}
           placeholder="Enter a reference (e.g., 2:5.10)"
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <button
           type="submit"
@@ -139,10 +149,10 @@ export function AudioSection() {
             key={preset.ref}
             onClick={() => handlePreset(preset.ref)}
             disabled={loading}
-            className="rounded-full border border-gray-200 bg-gray-50 px-4 py-1.5 text-sm text-gray-700 transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-1.5 text-sm text-gray-700 dark:text-gray-300 transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             {preset.label}
-            <span className="ml-1.5 text-xs text-gray-400">{preset.ref}</span>
+            <span className="ml-1.5 text-xs text-gray-400 dark:text-gray-500">{preset.ref}</span>
           </button>
         ))}
       </div>
@@ -151,13 +161,13 @@ export function AudioSection() {
       {loading && (
         <div className="flex items-center justify-center py-12">
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <span className="ml-3 text-sm text-gray-500">Loading audio and passage...</span>
+          <span className="ml-3 text-sm text-gray-500 dark:text-gray-400">Loading audio and passage...</span>
         </div>
       )}
 
       {/* Error state */}
       {error && !loading && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 px-4 py-3 text-sm text-amber-800 dark:text-amber-400">
           {error}
         </div>
       )}
@@ -172,7 +182,7 @@ export function AudioSection() {
               <div>
                 <label
                   htmlFor="voice-select"
-                  className="mb-1.5 block text-sm font-medium text-gray-700"
+                  className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   Voice
                 </label>
@@ -180,7 +190,7 @@ export function AudioSection() {
                   id="voice-select"
                   value={selectedVoice}
                   onChange={(e) => setSelectedVoice(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
                   {voiceKeys.map((voice) => (
                     <option key={voice} value={voice}>
@@ -192,8 +202,8 @@ export function AudioSection() {
             )}
 
             {voiceKeys.length === 1 && (
-              <p className="text-sm text-gray-500">
-                Voice: <span className="font-medium text-gray-700">{voiceKeys[0]}</span>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Voice: <span className="font-medium text-gray-700 dark:text-gray-300">{voiceKeys[0]}</span>
               </p>
             )}
 
@@ -207,15 +217,40 @@ export function AudioSection() {
             >
               Your browser does not support the audio element.
             </audio>
+
+            {/* Spotify link */}
+            {spotifyUrl && (
+              <a
+                href={spotifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-[#1DB954]/30 bg-[#1DB954]/10 px-3.5 py-1.5 text-sm font-medium text-[#1DB954] transition-colors hover:bg-[#1DB954]/20 hover:border-[#1DB954]/50"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                >
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+                </svg>
+                Listen on Spotify
+                {paperTitle && (
+                  <span className="text-[#1DB954]/70">
+                    — Paper {paperId}: {paperTitle}
+                  </span>
+                )}
+              </a>
+            )}
           </div>
 
           {/* Passage text side */}
           {passageText && (
-            <div className="rounded-lg border border-gray-100 bg-gray-50 p-5">
-              <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 uppercase">
+            <div className="rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 p-5">
+              <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 dark:text-gray-500 uppercase">
                 {passageRef}
               </p>
-              <p className="leading-relaxed text-gray-800">{passageText}</p>
+              <p className="leading-relaxed text-gray-800 dark:text-gray-200">{passageText}</p>
               {passageRef && (
                 <a
                   href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${passageRef}`}
