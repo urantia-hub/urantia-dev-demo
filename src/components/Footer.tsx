@@ -7,7 +7,7 @@ const FOOTER_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-gray-200 bg-gray-50">
+    <footer className="border-t border-gray-800 bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           {FOOTER_LINKS.map((link) => (
@@ -16,15 +16,15 @@ export function Footer() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-gray-900 transition-colors hover:text-primary"
+                className="text-sm font-medium text-gray-200 transition-colors hover:text-white"
               >
                 {link.label}
               </a>
-              <p className="mt-1 text-xs text-gray-400">{link.description}</p>
+              <p className="mt-1 text-xs text-gray-500">{link.description}</p>
             </div>
           ))}
         </div>
-        <div className="mt-10 border-t border-gray-200 pt-6 text-center text-sm text-gray-400">
+        <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
           Built for the Urantia community
         </div>
       </div>

@@ -26,6 +26,7 @@ export default function Home() {
           id="quote"
           title="Random Quote"
           subtitle="Discover inspiring passages from the Urantia Papers."
+          variant="alt"
         >
           <QuoteSection />
         </SectionWrapper>
@@ -40,6 +41,7 @@ export default function Home() {
           id="entities"
           title="Entity Explorer"
           subtitle="Browse 4,400+ beings, places, and concepts mentioned in the Urantia Papers."
+          variant="alt"
         >
           <EntitySection />
         </SectionWrapper>
@@ -54,6 +56,7 @@ export default function Home() {
           id="roadmap"
           title="Coming Soon"
           subtitle="What we're building next for the Urantia community."
+          variant="alt"
         >
           <RoadmapSection />
         </SectionWrapper>

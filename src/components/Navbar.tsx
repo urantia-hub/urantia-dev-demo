@@ -15,23 +15,26 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-gray-200/80 bg-white/95 backdrop-blur-lg shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Logo */}
         <a
           href="https://urantia.dev"
-          className="text-lg font-bold text-primary"
+          className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-gray-900"
         >
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-white">
+            U
+          </span>
           urantia.dev
         </a>
 
         {/* Desktop links */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-gray-600 transition-colors hover:text-primary"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
             >
               {link.label}
             </a>
@@ -40,7 +43,7 @@ export function Navbar() {
             href="https://urantia.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+            className="ml-3 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-dark hover:shadow-md"
           >
             View Docs &rarr;
           </a>
@@ -49,7 +52,7 @@ export function Navbar() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:text-primary md:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -68,12 +71,12 @@ export function Navbar() {
       {/* Mobile dropdown */}
       {menuOpen && (
         <div className="border-t border-gray-100 bg-white px-4 pb-4 md:hidden">
-          <div className="flex flex-col gap-3 pt-3">
+          <div className="flex flex-col gap-1 pt-3">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-600 transition-colors hover:text-primary"
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -83,7 +86,7 @@ export function Navbar() {
               href="https://urantia.dev"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 rounded-lg bg-primary px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+              className="mt-2 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-dark"
             >
               View Docs &rarr;
             </a>
