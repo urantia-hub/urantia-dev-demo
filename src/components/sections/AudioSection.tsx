@@ -131,7 +131,7 @@ export function AudioSection() {
           value={inputRef}
           onChange={(e) => setInputRef(e.target.value)}
           placeholder="Enter a reference (e.g., 2:5.10)"
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <button
           type="submit"
@@ -149,10 +149,10 @@ export function AudioSection() {
             key={preset.ref}
             onClick={() => handlePreset(preset.ref)}
             disabled={loading}
-            className="rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-1.5 text-sm text-gray-700 dark:text-gray-300 transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-full border border-gray-200 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] px-4 py-1.5 text-sm text-gray-700 dark:text-gray-400 transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary dark:hover:text-[#3b82f6] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {preset.label}
-            <span className="ml-1.5 text-xs text-gray-400 dark:text-gray-500">{preset.ref}</span>
+            <span className="ml-1.5 text-xs text-gray-400 dark:text-gray-400">{preset.ref}</span>
           </button>
         ))}
       </div>
@@ -167,7 +167,7 @@ export function AudioSection() {
 
       {/* Error state */}
       {error && !loading && (
-        <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 px-4 py-3 text-sm text-amber-800 dark:text-amber-400">
+        <div className="rounded-lg border border-amber-200 dark:border-amber-500/20 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-400">
           {error}
         </div>
       )}
@@ -182,7 +182,7 @@ export function AudioSection() {
               <div>
                 <label
                   htmlFor="voice-select"
-                  className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
                 >
                   Voice
                 </label>
@@ -190,7 +190,7 @@ export function AudioSection() {
                   id="voice-select"
                   value={selectedVoice}
                   onChange={(e) => setSelectedVoice(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
                   {voiceKeys.map((voice) => (
                     <option key={voice} value={voice}>
@@ -203,7 +203,7 @@ export function AudioSection() {
 
             {voiceKeys.length === 1 && (
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Voice: <span className="font-medium text-gray-700 dark:text-gray-300">{voiceKeys[0]}</span>
+                Voice: <span className="font-medium text-gray-700 dark:text-white">{voiceKeys[0]}</span>
               </p>
             )}
 
@@ -246,11 +246,11 @@ export function AudioSection() {
 
           {/* Passage text side */}
           {passageText && (
-            <div className="rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 p-5">
-              <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 dark:text-gray-500 uppercase">
+            <div className="rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] p-5">
+              <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 dark:text-gray-400 uppercase">
                 {passageRef}
               </p>
-              <p className="leading-relaxed text-gray-800 dark:text-gray-200">{passageText}</p>
+              <p className="leading-relaxed text-gray-800 dark:text-gray-400">{passageText}</p>
               {passageRef && (
                 <a
                   href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${passageRef}`}
@@ -268,11 +268,11 @@ export function AudioSection() {
 
       {/* Show passage text even without audio */}
       {!loading && !audioUrl && passageText && (
-        <div className="rounded-lg border border-gray-100 bg-gray-50 p-5">
-          <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 uppercase">
+        <div className="rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] p-5">
+          <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 dark:text-gray-400 uppercase">
             {passageRef}
           </p>
-          <p className="leading-relaxed text-gray-800">{passageText}</p>
+          <p className="leading-relaxed text-gray-800 dark:text-gray-400">{passageText}</p>
           {passageRef && (
             <a
               href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${passageRef}`}

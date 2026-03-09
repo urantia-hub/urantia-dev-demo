@@ -15,7 +15,7 @@ const EXAMPLE_QUERIES = [
 
 function truncate(text: string, max = 300): string {
   if (text.length <= max) return text;
-  return text.slice(0, max).trimEnd() + "…";
+  return text.slice(0, max).trimEnd() + "\u2026";
 }
 
 function ScoreBadge({ result, mode }: { result: SearchResult; mode: SearchMode }) {
@@ -29,7 +29,7 @@ function ScoreBadge({ result, mode }: { result: SearchResult; mode: SearchMode }
       : `#${value}`;
 
   return (
-    <span className="text-xs text-gray-400 dark:text-gray-500">
+    <span className="text-xs text-gray-400 dark:text-gray-400">
       {label}: {display}
     </span>
   );
@@ -87,19 +87,19 @@ export function SearchSection() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Ask a question about the Urantia Papers..."
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={() => handleSearch()}
           disabled={loading || !query.trim()}
           className="cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading ? "Searching…" : "Search"}
+          {loading ? "Searching\u2026" : "Search"}
         </button>
       </div>
 
       {/* Mode toggle */}
-      <div className="mt-3 flex gap-1 rounded-lg bg-gray-100 dark:bg-gray-800 p-1 self-start w-fit">
+      <div className="mt-3 flex gap-1 rounded-lg bg-gray-100 dark:bg-[#3b82f61a] p-1 self-start w-fit">
         <button
           onClick={() => setMode("semantic")}
           className={`cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
@@ -131,7 +131,7 @@ export function SearchSection() {
               <button
                 key={example}
                 onClick={() => handleExampleClick(example)}
-                className="cursor-pointer rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-1.5 text-sm text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
+                className="cursor-pointer rounded-full border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-1.5 text-sm text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary dark:hover:text-[#3b82f6]"
               >
                 {example}
               </button>
@@ -146,12 +146,12 @@ export function SearchSection() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="animate-pulse rounded-lg border border-gray-100 dark:border-gray-800 p-5"
+              className="animate-pulse rounded-lg border border-gray-100 dark:border-gray-300/15 p-5"
             >
-              <div className="mb-3 h-4 w-1/4 rounded bg-gray-200 dark:bg-gray-700" />
-              <div className="mb-2 h-3 w-full rounded bg-gray-100 dark:bg-gray-800" />
-              <div className="mb-2 h-3 w-5/6 rounded bg-gray-100 dark:bg-gray-800" />
-              <div className="h-3 w-2/3 rounded bg-gray-100 dark:bg-gray-800" />
+              <div className="mb-3 h-4 w-1/4 rounded bg-gray-200 dark:bg-gray-300/10" />
+              <div className="mb-2 h-3 w-full rounded bg-gray-100 dark:bg-gray-300/10" />
+              <div className="mb-2 h-3 w-5/6 rounded bg-gray-100 dark:bg-gray-300/10" />
+              <div className="h-3 w-2/3 rounded bg-gray-100 dark:bg-gray-300/10" />
             </div>
           ))}
         </div>
@@ -159,7 +159,7 @@ export function SearchSection() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}
@@ -170,24 +170,24 @@ export function SearchSection() {
           {results.map((result) => (
             <div
               key={result.id}
-              className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm transition-shadow hover:shadow-md"
+              className="rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span className="text-sm font-semibold text-gray-900 dark:text-white">
                   Paper {result.paperId}
                 </span>
-                <span className="text-sm text-gray-400 dark:text-gray-500">·</span>
+                <span className="text-sm text-gray-400 dark:text-gray-400">&middot;</span>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
                   {result.paperTitle}
                 </span>
-                <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-gray-300">
+                <span className="rounded-full bg-gray-100 dark:bg-[#3b82f61a] px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-[#3b82f6]">
                   {result.standardReferenceId}
                 </span>
                 <span className="ml-auto">
                   <ScoreBadge result={result} mode={mode} />
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+              <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-400">
                 {truncate(result.text)}
               </p>
               <a
@@ -205,7 +205,7 @@ export function SearchSection() {
 
       {/* Empty state */}
       {!loading && !error && hasSearched && results.length === 0 && (
-        <div className="mt-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 py-10 text-center">
+        <div className="mt-6 rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] py-10 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             No results found. Try rephrasing your query or switching search
             modes.

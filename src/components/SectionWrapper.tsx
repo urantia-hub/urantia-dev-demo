@@ -11,7 +11,7 @@ export function SectionWrapper({ id, title, subtitle, children, variant = "defau
     <section
       id={id}
       className={`scroll-mt-20 py-16 md:py-24 ${
-        variant === "alt" ? "bg-gray-50/60 dark:bg-gray-900/60" : "bg-white dark:bg-[var(--background)]"
+        variant === "alt" ? "bg-gray-50/60 dark:bg-[#3b82f61a]" : "bg-white dark:bg-[var(--background)]"
       }`}
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
