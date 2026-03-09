@@ -1,6 +1,6 @@
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-gray-100 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
+    <section className="relative overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
       {/* Decorative grid pattern */}
       <div
         className="absolute inset-0 opacity-[0.03]"
