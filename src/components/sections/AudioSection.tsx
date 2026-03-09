@@ -47,7 +47,7 @@ export function AudioSection() {
     try {
       const [audioRes, contextRes] = await Promise.all([
         getAudio(ref).catch(() => null),
-        getParagraphContext(ref, 0),
+        getParagraphContext(ref, 1),
       ]);
 
       // Extract paragraph text
@@ -216,6 +216,16 @@ export function AudioSection() {
                 {passageRef}
               </p>
               <p className="leading-relaxed text-gray-800">{passageText}</p>
+              {passageRef && (
+                <a
+                  href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${passageRef}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                >
+                  Read on UrantiaHub ↗
+                </a>
+              )}
             </div>
           )}
         </div>
@@ -228,6 +238,16 @@ export function AudioSection() {
             {passageRef}
           </p>
           <p className="leading-relaxed text-gray-800">{passageText}</p>
+          {passageRef && (
+            <a
+              href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${passageRef}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              Read on UrantiaHub ↗
+            </a>
+          )}
         </div>
       )}
     </div>

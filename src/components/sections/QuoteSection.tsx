@@ -111,6 +111,14 @@ export function QuoteSection() {
               {quote.standardReferenceId}
             </span>
           </p>
+          <a
+            href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${quote.standardReferenceId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 pl-6 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Read on UrantiaHub ↗
+          </a>
 
           {/* Action buttons */}
           <div className="mt-8 flex items-center justify-center gap-3">

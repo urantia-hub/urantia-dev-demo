@@ -77,6 +77,16 @@ function ParagraphBlock({
       >
         {paragraph.text}
       </p>
+      {isTarget && (
+        <a
+          href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${paragraph.standardReferenceId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+        >
+          Read on UrantiaHub ↗
+        </a>
+      )}
     </div>
   );
 }

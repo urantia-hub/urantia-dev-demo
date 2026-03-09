@@ -108,7 +108,7 @@ function EntityCard({
       {isExpanded && (
         <div className="mt-4 space-y-3 border-t border-gray-100 pt-4">
           {entity.description && (
-            <p className="text-sm leading-relaxed text-gray-600">{entity.description}</p>
+            <p className="text-sm leading-relaxed text-gray-600 whitespace-pre-line">{entity.description}</p>
           )}
 
           {entity.aliases && entity.aliases.length > 0 && (
@@ -151,17 +151,23 @@ function EntityCard({
           )}
 
           {!loadingParagraphs && paragraphs.length > 0 && (
-            <div className="space-y-2">
+            <div className="space-y-3">
               <span className="text-xs font-medium text-gray-500">Citing passages:</span>
               {paragraphs.map((p) => (
                 <div
                   key={p.id}
-                  className="rounded-md bg-gray-50 px-3 py-2"
+                  className="rounded-md bg-gray-50 px-3 py-3"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <span className="mb-1 inline-block rounded bg-gray-200 px-1.5 py-0.5 text-xs font-medium text-gray-600">
-                    {p.standardReferenceId}
-                  </span>
+                  <a
+                    href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${p.standardReferenceId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mb-1 inline-block rounded bg-gray-200 px-1.5 py-0.5 text-xs font-medium text-gray-600 hover:bg-primary/10 hover:text-primary transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {p.standardReferenceId} ↗
+                  </a>
                   <p className="text-xs leading-relaxed text-gray-600">
                     {truncate(p.text)}
                   </p>
