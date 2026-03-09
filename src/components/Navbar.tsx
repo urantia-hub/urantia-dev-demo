@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Audio", href: "#audio" },
   { label: "Entities", href: "#entities" },
   { label: "Lookup", href: "#lookup" },
+  { label: "Roadmap", href: "#roadmap" },
 ];
 
 export function Navbar() {
