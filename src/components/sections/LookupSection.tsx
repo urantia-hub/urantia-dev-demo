@@ -13,30 +13,30 @@ interface ContextData {
 function FormatGuide({ prominent }: { prominent?: boolean }) {
   return (
     <div
-      className={`${prominent ? "rounded-lg border border-gray-200 bg-gray-50 p-5" : ""}`}
+      className={`${prominent ? "rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-5" : ""}`}
     >
       <p
-        className={`mb-2 text-sm ${prominent ? "font-medium text-gray-700" : "text-gray-400"}`}
+        className={`mb-2 text-sm ${prominent ? "font-medium text-gray-700 dark:text-gray-300" : "text-gray-400 dark:text-gray-500"}`}
       >
         Supported reference formats:
       </p>
       <ul
-        className={`space-y-1 text-sm ${prominent ? "text-gray-600" : "text-gray-400"}`}
+        className={`space-y-1 text-sm ${prominent ? "text-gray-600 dark:text-gray-400" : "text-gray-400 dark:text-gray-500"}`}
       >
         <li>
-          <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">
+          <code className="rounded bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 text-xs font-mono">
             2:0.1
           </code>{" "}
           — Paper:Section.Paragraph (standard)
         </li>
         <li>
-          <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">
+          <code className="rounded bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 text-xs font-mono">
             2.0.1
           </code>{" "}
           — Paper.Section.Paragraph
         </li>
         <li>
-          <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono">
+          <code className="rounded bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 text-xs font-mono">
             1:2.0.1
           </code>{" "}
           — Part:Paper.Section.Paragraph (global)
@@ -57,7 +57,7 @@ function ParagraphBlock({
     <div
       className={`px-5 py-4 ${
         isTarget
-          ? "rounded-lg bg-blue-50 border border-blue-100"
+          ? "rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50"
           : "opacity-50"
       }`}
     >
@@ -65,14 +65,14 @@ function ParagraphBlock({
         className={`inline-block mb-2 rounded-full px-2.5 py-0.5 text-xs font-medium ${
           isTarget
             ? "bg-primary text-white"
-            : "bg-gray-100 text-gray-500"
+            : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
         }`}
       >
         {paragraph.standardReferenceId}
       </span>
       <p
         className={`leading-relaxed ${
-          isTarget ? "text-base text-gray-900" : "text-sm text-gray-700"
+          isTarget ? "text-base text-gray-900 dark:text-gray-100" : "text-sm text-gray-700 dark:text-gray-300"
         }`}
       >
         {paragraph.text}
@@ -128,7 +128,7 @@ export function LookupSection() {
           onChange={(e) => setRef(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleLookup()}
           placeholder="Enter a reference (e.g., 2:0.1)"
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={handleLookup}
@@ -141,9 +141,9 @@ export function LookupSection() {
 
       {/* Context window slider */}
       <div className="mt-4 flex items-center gap-4">
-        <label className="text-sm text-gray-600 whitespace-nowrap">
+        <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
           Context:{" "}
-          <span className="font-medium text-gray-900">{contextWindow}</span>{" "}
+          <span className="font-medium text-gray-900 dark:text-white">{contextWindow}</span>{" "}
           {contextWindow === 1 ? "paragraph" : "paragraphs"} before &amp; after
         </label>
         <input
@@ -177,13 +177,13 @@ export function LookupSection() {
               <div
                 key={i}
                 className={`animate-pulse rounded-lg p-5 ${
-                  isMiddle ? "bg-blue-50 border border-blue-100" : "border border-gray-100"
+                  isMiddle ? "bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50" : "border border-gray-100 dark:border-gray-800"
                 }`}
               >
-                <div className="mb-3 h-4 w-16 rounded bg-gray-200" />
-                <div className="mb-2 h-3 w-full rounded bg-gray-100" />
-                <div className="mb-2 h-3 w-5/6 rounded bg-gray-100" />
-                <div className="h-3 w-2/3 rounded bg-gray-100" />
+                <div className="mb-3 h-4 w-16 rounded bg-gray-200 dark:bg-gray-700" />
+                <div className="mb-2 h-3 w-full rounded bg-gray-100 dark:bg-gray-800" />
+                <div className="mb-2 h-3 w-5/6 rounded bg-gray-100 dark:bg-gray-800" />
+                <div className="h-3 w-2/3 rounded bg-gray-100 dark:bg-gray-800" />
               </div>
             );
           })}
@@ -192,7 +192,7 @@ export function LookupSection() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}

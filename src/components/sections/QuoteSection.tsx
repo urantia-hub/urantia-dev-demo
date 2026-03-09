@@ -71,22 +71,22 @@ export function QuoteSection() {
       {/* Loading skeleton */}
       {loading && !quote && (
         <div className="w-full max-w-3xl animate-pulse">
-          <div className="border-l-4 border-gray-200 pl-6">
-            <div className="mb-3 h-5 w-full rounded bg-gray-200" />
-            <div className="mb-3 h-5 w-5/6 rounded bg-gray-200" />
-            <div className="mb-3 h-5 w-4/6 rounded bg-gray-200" />
-            <div className="h-5 w-3/6 rounded bg-gray-200" />
+          <div className="border-l-4 border-gray-200 dark:border-gray-700 pl-6">
+            <div className="mb-3 h-5 w-full rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="mb-3 h-5 w-5/6 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="mb-3 h-5 w-4/6 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="h-5 w-3/6 rounded bg-gray-200 dark:bg-gray-700" />
           </div>
           <div className="mt-6 flex justify-center gap-3">
-            <div className="h-10 w-28 rounded-lg bg-gray-200" />
-            <div className="h-10 w-20 rounded-lg bg-gray-200" />
+            <div className="h-10 w-28 rounded-lg bg-gray-200 dark:bg-gray-700" />
+            <div className="h-10 w-20 rounded-lg bg-gray-200 dark:bg-gray-700" />
           </div>
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="w-full max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700">
+        <div className="w-full max-w-3xl rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-center text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}
@@ -99,15 +99,15 @@ export function QuoteSection() {
         >
           {/* Quote text */}
           <blockquote className="border-l-4 border-primary/40 pl-6">
-            <p className="text-lg leading-relaxed text-gray-800 sm:text-xl md:text-2xl md:leading-relaxed">
+            <p className="text-lg leading-relaxed text-gray-800 dark:text-gray-200 sm:text-xl md:text-2xl md:leading-relaxed">
               {quote.text}
             </p>
           </blockquote>
 
           {/* Attribution */}
-          <p className="mt-4 pl-6 text-sm text-gray-400">
+          <p className="mt-4 pl-6 text-sm text-gray-400 dark:text-gray-500">
             {quote.paperTitle}{" "}
-            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+            <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">
               {quote.standardReferenceId}
             </span>
           </p>
@@ -131,14 +131,14 @@ export function QuoteSection() {
             </button>
             <button
               onClick={handleCopy}
-              className="cursor-pointer rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
+              className="cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
             >
               {copied ? "Copied!" : "Copy"}
             </button>
             {canShare && (
               <button
                 onClick={handleShare}
-                className="cursor-pointer rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
+                className="cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
               >
                 Share
               </button>

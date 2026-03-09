@@ -15,12 +15,12 @@ const ENTITY_TYPES: { label: string; value: EntityType | null }[] = [
 ];
 
 const TYPE_COLORS: Record<EntityType, string> = {
-  being: "bg-blue-100 text-blue-700",
-  place: "bg-green-100 text-green-700",
-  order: "bg-purple-100 text-purple-700",
-  race: "bg-amber-100 text-amber-700",
-  religion: "bg-rose-100 text-rose-700",
-  concept: "bg-slate-100 text-slate-700",
+  being: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300",
+  place: "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300",
+  order: "bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300",
+  race: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
+  religion: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
+  concept: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
 };
 
 function truncate(text: string, max = 150): string {
@@ -30,11 +30,11 @@ function truncate(text: string, max = 150): string {
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-lg border border-gray-100 p-5">
-      <div className="mb-3 h-5 w-2/3 rounded bg-gray-200" />
+    <div className="animate-pulse rounded-lg border border-gray-100 dark:border-gray-800 p-5">
+      <div className="mb-3 h-5 w-2/3 rounded bg-gray-200 dark:bg-gray-700" />
       <div className="mb-2 flex gap-2">
-        <div className="h-5 w-16 rounded-full bg-gray-100" />
-        <div className="h-5 w-24 rounded-full bg-gray-100" />
+        <div className="h-5 w-16 rounded-full bg-gray-100 dark:bg-gray-800" />
+        <div className="h-5 w-24 rounded-full bg-gray-100 dark:bg-gray-800" />
       </div>
     </div>
   );
@@ -69,7 +69,7 @@ function EntityCard({
 
   return (
     <div
-      className="cursor-pointer rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+      className="cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm transition-shadow hover:shadow-md"
       role="button"
       tabIndex={0}
       aria-expanded={isExpanded}
@@ -82,7 +82,7 @@ function EntityCard({
       }}
     >
       <div className="flex items-start justify-between gap-2">
-        <h3 className="text-base font-semibold text-gray-900">{entity.name}</h3>
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white">{entity.name}</h3>
         <svg
           className={`mt-0.5 h-4 w-4 shrink-0 text-gray-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}
           fill="none"
@@ -100,28 +100,28 @@ function EntityCard({
         >
           {entity.type}
         </span>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-400 dark:text-gray-500">
           {entity.citationCount} {entity.citationCount === 1 ? "mention" : "mentions"}
         </span>
       </div>
 
       {isExpanded && (
-        <div className="mt-4 space-y-3 border-t border-gray-100 pt-4">
+        <div className="mt-4 space-y-3 border-t border-gray-100 dark:border-gray-700 pt-4">
           {entity.description && (
-            <p className="text-sm leading-relaxed text-gray-600 whitespace-pre-line">{entity.description}</p>
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400 whitespace-pre-line">{entity.description}</p>
           )}
 
           {entity.aliases && entity.aliases.length > 0 && (
             <div>
-              <span className="text-xs font-medium text-gray-500">Aliases: </span>
-              <span className="text-xs text-gray-600">{entity.aliases.join(", ")}</span>
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Aliases: </span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">{entity.aliases.join(", ")}</span>
             </div>
           )}
 
           {entity.seeAlso && entity.seeAlso.length > 0 && (
             <div>
-              <span className="text-xs font-medium text-gray-500">See also: </span>
-              <span className="text-xs text-gray-600">{entity.seeAlso.join(", ")}</span>
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">See also: </span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">{entity.seeAlso.join(", ")}</span>
             </div>
           )}
 
@@ -146,29 +146,29 @@ function EntityCard({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                 />
               </svg>
-              <span className="text-xs text-gray-400">Loading citations…</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">Loading citations…</span>
             </div>
           )}
 
           {!loadingParagraphs && paragraphs.length > 0 && (
             <div className="space-y-3">
-              <span className="text-xs font-medium text-gray-500">Citing passages:</span>
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Citing passages:</span>
               {paragraphs.map((p) => (
                 <div
                   key={p.id}
-                  className="rounded-md bg-gray-50 px-3 py-3"
+                  className="rounded-md bg-gray-50 dark:bg-gray-900/50 px-3 py-3"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <a
                     href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${p.standardReferenceId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mb-1 inline-block rounded bg-gray-200 px-1.5 py-0.5 text-xs font-medium text-gray-600 hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="mb-1 inline-block rounded bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {p.standardReferenceId} ↗
                   </a>
-                  <p className="text-xs leading-relaxed text-gray-600">
+                  <p className="text-xs leading-relaxed text-gray-600 dark:text-gray-400">
                     {truncate(p.text)}
                   </p>
                 </div>
@@ -267,7 +267,7 @@ export function EntitySection() {
   return (
     <div>
       {/* Type filter tabs */}
-      <div className="flex flex-wrap gap-1 rounded-lg bg-gray-100 p-1">
+      <div className="flex flex-wrap gap-1 rounded-lg bg-gray-100 dark:bg-gray-800 p-1">
         {ENTITY_TYPES.map(({ label, value }) => (
           <button
             key={label}
@@ -275,7 +275,7 @@ export function EntitySection() {
             className={`cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
               activeType === value
                 ? "bg-primary text-white shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
             }`}
           >
             {label}
@@ -290,13 +290,13 @@ export function EntitySection() {
           value={searchQuery}
           onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search entities by name…"
-          className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
 
       {/* Error */}
       {error && (
-        <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}
@@ -332,7 +332,7 @@ export function EntitySection() {
               <button
                 onClick={handleLoadMore}
                 disabled={loadingMore}
-                className="cursor-pointer rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                className="cursor-pointer rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loadingMore ? (
                   <span className="inline-flex items-center gap-2">
@@ -368,8 +368,8 @@ export function EntitySection() {
 
       {/* Empty state */}
       {!loading && !error && entities.length === 0 && (
-        <div className="mt-6 rounded-lg border border-gray-100 bg-gray-50 py-10 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 py-10 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             No entities found. Try a different search or filter.
           </p>
         </div>

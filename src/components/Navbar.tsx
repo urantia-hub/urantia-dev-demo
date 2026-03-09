@@ -15,12 +15,12 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200/80 bg-white/95 backdrop-blur-lg shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+    <nav className="sticky top-0 z-50 border-b border-gray-200/80 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Logo */}
         <a
           href="https://urantia.dev"
-          className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-gray-900"
+          className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-gray-900 dark:text-white"
         >
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-white">
             U
@@ -34,7 +34,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
             >
               {link.label}
             </a>
@@ -52,7 +52,7 @@ export function Navbar() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 md:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -70,13 +70,13 @@ export function Navbar() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="border-t border-gray-100 bg-white px-4 pb-4 md:hidden">
+        <div className="border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 pb-4 md:hidden">
           <div className="flex flex-col gap-1 pt-3">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
