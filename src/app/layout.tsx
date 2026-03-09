@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Urantia Papers API Demo — urantia.dev",
   description: "Interactive demos of the Urantia Papers API. Try semantic search, random quotes, audio narration, entity exploration, and passage lookup.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
