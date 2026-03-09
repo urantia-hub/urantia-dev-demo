@@ -59,7 +59,10 @@ function EntityCard({
       setLoadingParagraphs(true);
       getEntityParagraphs(entity.id, 1, 3)
         .then((res) => setParagraphs(res.data ?? []))
-        .catch(() => setParagraphs([]))
+        .catch(() => {
+          setParagraphs([]);
+          hasFetched.current = false;
+        })
         .finally(() => setLoadingParagraphs(false));
     }
   }, [isExpanded, entity.id]);
@@ -67,7 +70,16 @@ function EntityCard({
   return (
     <div
       className="cursor-pointer rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
       onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-base font-semibold text-gray-900">{entity.name}</h3>
@@ -213,6 +225,13 @@ export function EntitySection() {
   useEffect(() => {
     fetchEntities(1, null, "", false);
   }, [fetchEntities]);
+
+  // Cleanup debounce timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   const handleTypeChange = (type: EntityType | null) => {
     setActiveType(type);

@@ -54,7 +54,7 @@ export function AudioSection() {
       const target = contextRes?.data?.target;
       if (target) {
         setPassageText(target.text);
-        setPassageRef(target.paragraphId || ref);
+        setPassageRef(target.standardReferenceId || ref);
       } else {
         setPassageText(null);
         setPassageRef(ref);
@@ -121,12 +121,12 @@ export function AudioSection() {
           value={inputRef}
           onChange={(e) => setInputRef(e.target.value)}
           placeholder="Enter a reference (e.g., 2:5.10)"
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <button
           type="submit"
           disabled={loading || !inputRef.trim()}
-          className="rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg bg-primary px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Loading..." : "Play"}
         </button>
