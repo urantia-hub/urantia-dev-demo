@@ -136,7 +136,7 @@ export function AudioSection() {
         <button
           type="submit"
           disabled={loading || !inputRef.trim()}
-          className="rounded-lg bg-primary px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-primary-glow rounded-lg bg-primary px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Loading..." : "Play"}
         </button>
@@ -246,7 +246,7 @@ export function AudioSection() {
 
           {/* Passage text side */}
           {passageText && (
-            <div className="rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] p-5">
+            <div className="card-glow rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] p-5">
               <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 dark:text-gray-400 uppercase">
                 {passageRef}
               </p>
@@ -268,7 +268,7 @@ export function AudioSection() {
 
       {/* Show passage text even without audio */}
       {!loading && !audioUrl && passageText && (
-        <div className="rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] p-5">
+        <div className="card-glow rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] p-5">
           <p className="mb-2 text-xs font-medium tracking-wide text-gray-400 dark:text-gray-400 uppercase">
             {passageRef}
           </p>

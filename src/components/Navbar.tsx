@@ -44,7 +44,7 @@ export function Navbar() {
             href="https://urantia.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-3 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-dark hover:shadow-md"
+            className="btn-primary-glow ml-3 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-dark hover:shadow-md"
           >
             View Docs &rarr;
           </a>
@@ -87,7 +87,7 @@ export function Navbar() {
               href="https://urantia.dev"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-dark"
+              className="btn-primary-glow mt-2 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-dark"
             >
               View Docs &rarr;
             </a>

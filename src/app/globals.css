@@ -60,3 +60,42 @@ html {
     background-color: rgba(37, 99, 235, 0.3);
   }
 }
+
+/* Glow animation for ambient background effects */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow-shift {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+.animate-glow-shift {
+  animation: glow-shift 6s ease-in-out infinite;
+}
+
+/* Button glow for primary buttons in dark mode */
+@media (prefers-color-scheme: dark) {
+  .btn-primary-glow {
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3), 0 0 6px rgba(37, 99, 235, 0.2);
+    transition: box-shadow 0.3s ease, background-color 0.2s ease;
+  }
+  .btn-primary-glow:hover {
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.5), 0 0 10px rgba(37, 99, 235, 0.3);
+  }
+
+  /* Subtle glow for cards and inputs */
+  .card-glow {
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.08), 0 0 20px rgba(37, 99, 235, 0.06);
+    transition: box-shadow 0.3s ease;
+  }
+  .card-glow:hover {
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15), 0 0 30px rgba(37, 99, 235, 0.1);
+  }
+}

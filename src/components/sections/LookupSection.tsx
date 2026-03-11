@@ -133,7 +133,7 @@ export function LookupSection() {
         <button
           onClick={handleLookup}
           disabled={loading || !ref.trim()}
-          className="cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-primary-glow cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Looking up\u2026" : "Look Up"}
         </button>

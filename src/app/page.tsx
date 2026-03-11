@@ -14,14 +14,18 @@ export default function Home() {
     <>
       <Navbar />
       <main>
-        <Hero />
-        <SectionWrapper
-          id="search"
-          title="Semantic Search"
-          subtitle="Ask a question and find conceptually related passages — not just keyword matches."
-        >
-          <SearchSection />
-        </SectionWrapper>
+        {/* Dark wrapper lets the hero glow bleed into the first section */}
+        <div className="relative overflow-hidden bg-gray-950">
+          <Hero />
+          <SectionWrapper
+            id="search"
+            title="Semantic Search"
+            subtitle="Ask a question and find conceptually related passages — not just keyword matches."
+            variant="transparent"
+          >
+            <SearchSection />
+          </SectionWrapper>
+        </div>
         <SectionWrapper
           id="quote"
           title="Random Quote"

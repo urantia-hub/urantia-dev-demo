@@ -37,7 +37,7 @@ export function RoadmapSection() {
       {ROADMAP_ITEMS.map((item) => (
         <div
           key={item.title}
-          className="rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-300/15 bg-gray-50/50 dark:bg-transparent p-6 transition-colors hover:border-gray-300 dark:hover:border-gray-300/25 hover:bg-gray-50 dark:hover:bg-[#3b82f61a]"
+          className="card-glow rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-300/15 bg-gray-50/50 dark:bg-transparent p-6 transition-colors hover:border-gray-300 dark:hover:border-gray-300/25 hover:bg-gray-50 dark:hover:bg-[#3b82f61a]"
         >
           <span className="text-2xl" role="img" aria-label={item.title}>
             {item.icon}

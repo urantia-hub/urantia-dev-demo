@@ -69,7 +69,7 @@ function EntityCard({
 
   return (
     <div
-      className="cursor-pointer rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
+      className="card-glow cursor-pointer rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
       role="button"
       tabIndex={0}
       aria-expanded={isExpanded}

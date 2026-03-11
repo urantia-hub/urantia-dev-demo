@@ -92,7 +92,7 @@ export function SearchSection() {
         <button
           onClick={() => handleSearch()}
           disabled={loading || !query.trim()}
-          className="cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-primary-glow cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Searching\u2026" : "Search"}
         </button>
@@ -170,7 +170,7 @@ export function SearchSection() {
           {results.map((result) => (
             <div
               key={result.id}
-              className="rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
+              className="card-glow rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <span className="text-sm font-semibold text-gray-900 dark:text-white">
