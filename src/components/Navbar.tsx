@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Audio", href: "#audio" },
   { label: "Entities", href: "#entities" },
   { label: "Lookup", href: "#lookup" },
+  { label: "Plans", href: "#reading-plan" },
   { label: "Roadmap", href: "#roadmap" },
 ];
 
@@ -15,18 +16,11 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200/80 dark:border-gray-300/15 bg-white/95 dark:bg-[#0a0b0f]/95 backdrop-blur-lg shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+    <nav className="sticky top-0 z-50 border-b border-gray-200/10 dark:border-gray-300/15 bg-white/95 dark:bg-[#0a0b0f]/95 backdrop-blur-lg shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Logo */}
-        <a
-          href="https://urantia.dev"
-          className="flex items-center gap-2"
-        >
-          <img
-            src="/logo.svg"
-            alt="urantia.dev"
-            className="h-7 w-auto"
-          />
+        <a href="https://urantia.dev" className="flex items-center gap-2">
+          <img src="/logo.svg" alt="urantia.dev" className="h-7 w-auto" />
         </a>
 
         {/* Desktop links */}
@@ -58,12 +52,32 @@ export function Navbar() {
           aria-label="Toggle menu"
         >
           {menuOpen ? (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           ) : (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           )}
         </button>

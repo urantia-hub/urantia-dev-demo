@@ -6,6 +6,7 @@ import { QuoteSection } from "@/components/sections/QuoteSection";
 import { AudioSection } from "@/components/sections/AudioSection";
 import { EntitySection } from "@/components/sections/EntitySection";
 import { LookupSection } from "@/components/sections/LookupSection";
+import { ReadingPlanSection } from "@/components/sections/ReadingPlanSection";
 import { RoadmapSection } from "@/components/sections/RoadmapSection";
 import { Footer } from "@/components/Footer";
 
@@ -57,10 +58,17 @@ export default function Home() {
           <LookupSection />
         </SectionWrapper>
         <SectionWrapper
+          id="reading-plan"
+          title="Reading Plan Builder"
+          subtitle="Generate a multi-day reading plan from any topic — powered by semantic search."
+          variant="alt"
+        >
+          <ReadingPlanSection />
+        </SectionWrapper>
+        <SectionWrapper
           id="roadmap"
           title="Coming Soon"
           subtitle="What we're building next for the Urantia community."
-          variant="alt"
         >
           <RoadmapSection />
         </SectionWrapper>
