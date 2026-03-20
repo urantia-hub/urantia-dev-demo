@@ -7,6 +7,7 @@ import { AudioSection } from "@/components/sections/AudioSection";
 import { EntitySection } from "@/components/sections/EntitySection";
 import { LookupSection } from "@/components/sections/LookupSection";
 import { ReadingPlanSection } from "@/components/sections/ReadingPlanSection";
+import { AccountSection } from "@/components/sections/AccountSection";
 import { RoadmapSection } from "@/components/sections/RoadmapSection";
 import { Footer } from "@/components/Footer";
 
@@ -64,6 +65,13 @@ export default function Home() {
           variant="alt"
         >
           <ReadingPlanSection />
+        </SectionWrapper>
+        <SectionWrapper
+          id="account"
+          title="Your Account"
+          subtitle="Sign in to manage bookmarks, notes, reading progress, and preferences — powered by @urantia/auth."
+        >
+          <AccountSection />
         </SectionWrapper>
         <SectionWrapper
           id="roadmap"
