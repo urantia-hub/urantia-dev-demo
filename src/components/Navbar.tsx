@@ -21,7 +21,7 @@ export function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Logo */}
         <a href="https://urantia.dev" className="flex items-center gap-2">
-          <img src="/logo.svg" alt="urantia.dev" className="h-7 w-auto" />
+          <img src="/urantiadev-purple.svg" alt="urantia.dev" className="h-7 w-auto" />
         </a>
 
         {/* Desktop links */}

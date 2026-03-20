@@ -37,7 +37,7 @@ export function Footer() {
             className="inline-block"
           >
             <img
-              src="/logo.svg"
+              src="/urantiadev-purple.svg"
               alt="urantia.dev"
               className="mx-auto h-8 w-auto opacity-80 transition-opacity hover:opacity-100"
             />
