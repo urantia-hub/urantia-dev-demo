@@ -32,40 +32,16 @@ function getSession(): Session | null {
 }
 
 async function startSignIn() {
-  // Generate PKCE
-  const array = new Uint8Array(32);
-  crypto.getRandomValues(array);
-  let binary = "";
-  for (const byte of array) binary += String.fromCharCode(byte);
-  const codeVerifier = btoa(binary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(codeVerifier)
-  );
-  let digestBinary = "";
-  for (const byte of new Uint8Array(digest))
-    digestBinary += String.fromCharCode(byte);
-  const codeChallenge = btoa(digestBinary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-
   const state = crypto.randomUUID();
   const redirectUri = `${window.location.origin}/callback`;
 
-  sessionStorage.setItem(
-    "urantia_auth_pkce",
-    JSON.stringify({ codeVerifier, state })
-  );
+  // Store state for CSRF verification on callback
+  sessionStorage.setItem("urantia_auth_state", state);
 
+  // No PKCE needed — the demo uses server-side token exchange with app secret
   const params = new URLSearchParams({
     app_id: APP_ID,
     redirect_uri: redirectUri,
-    code_challenge: codeChallenge,
     state,
     scope: "bookmarks,notes,reading-progress,preferences",
   });

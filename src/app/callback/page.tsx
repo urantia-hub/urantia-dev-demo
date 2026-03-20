@@ -22,26 +22,20 @@ export default function CallbackPage() {
         return;
       }
 
-      // Retrieve PKCE verifier from sessionStorage
-      const stored = sessionStorage.getItem("urantia_auth_pkce");
-      let codeVerifier: string | undefined;
-      if (stored) {
-        const pkce = JSON.parse(stored);
-        // Verify state
-        if (state && pkce.state && state !== pkce.state) {
-          setError("State mismatch — possible CSRF attack.");
-          return;
-        }
-        codeVerifier = pkce.codeVerifier;
-        sessionStorage.removeItem("urantia_auth_pkce");
+      // Verify state for CSRF protection
+      const savedState = sessionStorage.getItem("urantia_auth_state");
+      if (state && savedState && state !== savedState) {
+        setError("State mismatch — possible CSRF attack.");
+        return;
       }
+      sessionStorage.removeItem("urantia_auth_state");
 
       try {
         // Exchange code via our server-side route (which holds the app secret)
         const res = await fetch("/api/auth/token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, codeVerifier }),
+          body: JSON.stringify({ code }),
         });
 
         if (!res.ok) {
