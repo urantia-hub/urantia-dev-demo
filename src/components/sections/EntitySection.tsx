@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getEntities, getEntityParagraphs } from "@/lib/api";
-import type { Entity, EntityType, Paragraph, PaginationMeta } from "@/lib/types";
+import { api } from "@/lib/api";
+import type { Entity, EntityType, Paragraph, PaginationMeta } from "@urantia/api";
 
 const ENTITY_TYPES: { label: string; value: EntityType | null }[] = [
   { label: "All", value: null },
@@ -57,7 +57,7 @@ function EntityCard({
     if (isExpanded && !hasFetched.current) {
       hasFetched.current = true;
       setLoadingParagraphs(true);
-      getEntityParagraphs(entity.id, 1, 3)
+      api.entities.paragraphs(entity.id, { page: 1, limit: 3 })
         .then((res) => setParagraphs(res.data ?? []))
         .catch(() => {
           setParagraphs([]);
@@ -146,7 +146,7 @@ function EntityCard({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                 />
               </svg>
-              <span className="text-xs text-gray-400 dark:text-gray-400">Loading citations\u2026</span>
+              <span className="text-xs text-gray-400 dark:text-gray-400">Loading citations{"\u2026"}</span>
             </div>
           )}
 
@@ -203,14 +203,12 @@ export function EntitySection() {
       setError(null);
 
       try {
-        const params: { page: number; limit: number; type?: string; q?: string } = {
+        const res = await api.entities.list({
           page: p,
           limit: 12,
-        };
-        if (type) params.type = type;
-        if (q.trim()) params.q = q.trim();
-
-        const res = await getEntities(params);
+          ...(type ? { type } : {}),
+          ...(q.trim() ? { q: q.trim() } : {}),
+        });
         if (append) {
           setEntities((prev) => [...prev, ...(res.data ?? [])]);
         } else {
@@ -355,7 +353,7 @@ export function EntitySection() {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                       />
                     </svg>
-                    Loading\u2026
+                    Loading{"\u2026"}
                   </span>
                 ) : (
                   "Load more"

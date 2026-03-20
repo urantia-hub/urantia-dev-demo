@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { getAudio, getParagraphContext } from "@/lib/api";
+import { api } from "@/lib/api";
 import { getSpotifyUrl } from "@/lib/spotify";
 
 const PRESETS = [
@@ -14,10 +14,6 @@ const PRESETS = [
 interface AudioEntry {
   format: string;
   url: string;
-}
-
-interface AudioData {
-  [narrator: string]: AudioEntry;
 }
 
 export function AudioSection() {
@@ -51,8 +47,8 @@ export function AudioSection() {
 
     try {
       const [audioRes, contextRes] = await Promise.all([
-        getAudio(ref).catch(() => null),
-        getParagraphContext(ref, 1),
+        api.audio.get(ref).catch(() => null),
+        api.paragraphs.context(ref, { window: 1 }),
       ]);
 
       // Extract paragraph text
@@ -76,7 +72,7 @@ export function AudioSection() {
         // Flatten to find all narrators across all languages
         const allVoices: Record<string, AudioEntry> = {};
         for (const lang of Object.keys(audioObj)) {
-          const narrators = audioObj[lang];
+          const narrators = audioObj[lang] as Record<string, AudioEntry>;
           if (narrators && typeof narrators === "object") {
             for (const narrator of Object.keys(narrators)) {
               const entry = narrators[narrator];

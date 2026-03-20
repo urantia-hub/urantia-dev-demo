@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { getParagraphContext } from "@/lib/api";
-import type { Paragraph } from "@/lib/types";
+import { api } from "@/lib/api";
+import type { Paragraph } from "@urantia/api";
 
 interface ContextData {
   target: Paragraph;
@@ -108,7 +108,7 @@ export function LookupSection() {
     setHasSearched(true);
 
     try {
-      const res = await getParagraphContext(trimmed, contextWindow);
+      const res = await api.paragraphs.context(trimmed, { window: contextWindow });
       setData(res.data);
     } catch {
       setError("Passage not found. Check your reference format.");

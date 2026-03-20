@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getRandomParagraph } from "@/lib/api";
-import type { Paragraph } from "@/lib/types";
+import { api } from "@/lib/api";
+import type { Paragraph } from "@urantia/api";
 
 export function QuoteSection() {
   const [quote, setQuote] = useState<Paragraph | null>(null);
@@ -22,7 +22,7 @@ export function QuoteSection() {
     setVisible(false);
 
     try {
-      const res = await getRandomParagraph();
+      const res = await api.paragraphs.random();
       setQuote(res.data);
       // Brief delay before fading in for smooth transition
       requestAnimationFrame(() => {

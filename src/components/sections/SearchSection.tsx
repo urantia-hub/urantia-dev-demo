@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { searchParagraphs, semanticSearch } from "@/lib/api";
-import type { SearchResult } from "@/lib/types";
+import { api } from "@/lib/api";
+import type { Paragraph } from "@urantia/api";
 
 type SearchMode = "semantic" | "keyword";
+
+type SearchResultItem = Paragraph & { rank?: number; similarity?: number };
 
 const EXAMPLE_QUERIES = [
   "What happens after death?",
@@ -18,7 +20,7 @@ function truncate(text: string, max = 300): string {
   return text.slice(0, max).trimEnd() + "\u2026";
 }
 
-function ScoreBadge({ result, mode }: { result: SearchResult; mode: SearchMode }) {
+function ScoreBadge({ result, mode }: { result: SearchResultItem; mode: SearchMode }) {
   const value = mode === "semantic" ? result.similarity : result.rank;
   if (value == null) return null;
 
@@ -38,7 +40,7 @@ function ScoreBadge({ result, mode }: { result: SearchResult; mode: SearchMode }
 export function SearchSection() {
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<SearchMode>("semantic");
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<SearchResultItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
@@ -55,8 +57,8 @@ export function SearchSection() {
       try {
         const res =
           mode === "semantic"
-            ? await semanticSearch(searchQuery, 5)
-            : await searchParagraphs(searchQuery, "and", 5);
+            ? await api.search.semantic({ q: searchQuery, limit: 5 })
+            : await api.search.fullText({ q: searchQuery, type: "and", limit: 5 });
 
         setResults(res.data ?? []);
       } catch {

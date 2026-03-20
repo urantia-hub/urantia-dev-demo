@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { semanticSearch } from "@/lib/api";
-import type { SearchResult } from "@/lib/types";
+import { api } from "@/lib/api";
+import type { Paragraph } from "@urantia/api";
 
 const EXAMPLE_TOPICS = [
   "How does prayer work?",
@@ -11,10 +11,12 @@ const EXAMPLE_TOPICS = [
   "Meaning of faith",
 ];
 
+type SearchResultItem = Paragraph & { similarity?: number };
+
 interface PlanDay {
   dayNumber: number;
   title: string;
-  paragraphs: SearchResult[];
+  paragraphs: SearchResultItem[];
 }
 
 function truncate(text: string, max = 200): string {
@@ -23,9 +25,9 @@ function truncate(text: string, max = 200): string {
 }
 
 /** Group semantic search results into days by Paper, preserving similarity order within each group. */
-function buildPlan(results: SearchResult[], durationDays: number): PlanDay[] {
+function buildPlan(results: SearchResultItem[], durationDays: number): PlanDay[] {
   // Group paragraphs by paperId, preserving similarity order
-  const paperGroups = new Map<string, SearchResult[]>();
+  const paperGroups = new Map<string, SearchResultItem[]>();
   for (const r of results) {
     const group = paperGroups.get(r.paperId) ?? [];
     group.push(r);
@@ -93,7 +95,7 @@ export function ReadingPlanSection() {
 
       try {
         // Fetch more results than a normal search to have enough for multiple days
-        const res = await semanticSearch(searchTopic, 20);
+        const res = await api.search.semantic({ q: searchTopic, limit: 20 });
         const results = res.data ?? [];
 
         if (results.length < 3) {
@@ -293,9 +295,12 @@ export function ReadingPlanSection() {
               <span className="font-medium text-gray-500 dark:text-gray-300">How it works:</span>{" "}
               This plan was generated client-side using the{" "}
               <code className="rounded bg-gray-100 dark:bg-[#3b82f61a] px-1.5 py-0.5 text-[11px] font-mono text-primary">
-                POST /search/semantic
+                @urantia/api
               </code>{" "}
-              endpoint. Results are grouped by Paper into daily readings. Any API consumer can build their own reading plan experience on top of this endpoint.
+              SDK. Results are grouped by Paper into daily readings. Any developer can build their own reading plan experience with{" "}
+              <code className="rounded bg-gray-100 dark:bg-[#3b82f61a] px-1.5 py-0.5 text-[11px] font-mono text-primary">
+                npm install @urantia/api
+              </code>.
             </p>
           </div>
         </div>
