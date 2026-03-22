@@ -2,7 +2,16 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { api } from "@/lib/api";
-import type { Entity, EntityType, Paragraph, PaginationMeta } from "@urantia/api";
+import type { Entity, EntityType, Paragraph, PaginationMeta, SupportedLanguage } from "@urantia/api";
+
+const LANGUAGES: { label: string; value: SupportedLanguage }[] = [
+  { label: "English", value: "eng" },
+  { label: "Espa\u00f1ol", value: "es" },
+  { label: "Fran\u00e7ais", value: "fr" },
+  { label: "Portugu\u00eas", value: "pt" },
+  { label: "Deutsch", value: "de" },
+  { label: "\ud55c\uad6d\uc5b4", value: "ko" },
+];
 
 const ENTITY_TYPES: { label: string; value: EntityType | null }[] = [
   { label: "All", value: null },
@@ -103,6 +112,11 @@ function EntityCard({
         <span className="text-xs text-gray-400 dark:text-gray-400">
           {entity.citationCount} {entity.citationCount === 1 ? "mention" : "mentions"}
         </span>
+        {entity.language && entity.language !== "eng" && (
+          <span className="rounded-full bg-indigo-100 dark:bg-indigo-500/15 px-2 py-0.5 text-xs font-medium text-indigo-600 dark:text-indigo-400">
+            {entity.language}
+          </span>
+        )}
       </div>
 
       {isExpanded && (
@@ -191,10 +205,11 @@ export function EntitySection() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [lang, setLang] = useState<SupportedLanguage>("eng");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchEntities = useCallback(
-    async (p: number, type: EntityType | null, q: string, append: boolean) => {
+    async (p: number, type: EntityType | null, q: string, append: boolean, language: SupportedLanguage = "eng") => {
       if (append) {
         setLoadingMore(true);
       } else {
@@ -208,6 +223,7 @@ export function EntitySection() {
           limit: 12,
           ...(type ? { type } : {}),
           ...(q.trim() ? { q: q.trim() } : {}),
+          ...(language && language !== "eng" ? { lang: language } : {}),
         });
         if (append) {
           setEntities((prev) => [...prev, ...(res.data ?? [])]);
@@ -227,8 +243,8 @@ export function EntitySection() {
 
   // Initial load
   useEffect(() => {
-    fetchEntities(1, null, "", false);
-  }, [fetchEntities]);
+    fetchEntities(1, null, "", false, lang);
+  }, [fetchEntities, lang]);
 
   // Cleanup debounce timeout on unmount
   useEffect(() => {
@@ -241,7 +257,7 @@ export function EntitySection() {
     setActiveType(type);
     setPage(1);
     setExpandedId(null);
-    fetchEntities(1, type, searchQuery, false);
+    fetchEntities(1, type, searchQuery, false, lang);
   };
 
   const handleSearchChange = (value: string) => {
@@ -250,14 +266,21 @@ export function EntitySection() {
     debounceRef.current = setTimeout(() => {
       setPage(1);
       setExpandedId(null);
-      fetchEntities(1, activeType, value, false);
+      fetchEntities(1, activeType, value, false, lang);
     }, 300);
+  };
+
+  const handleLangChange = (newLang: SupportedLanguage) => {
+    setLang(newLang);
+    setPage(1);
+    setExpandedId(null);
+    fetchEntities(1, activeType, searchQuery, false, newLang);
   };
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    fetchEntities(nextPage, activeType, searchQuery, true);
+    fetchEntities(nextPage, activeType, searchQuery, true, lang);
   };
 
   const hasMore = meta ? page < meta.totalPages : false;
@@ -281,15 +304,24 @@ export function EntitySection() {
         ))}
       </div>
 
-      {/* Search input */}
-      <div className="mt-4">
+      {/* Search + language selector */}
+      <div className="mt-4 flex gap-3">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search entities by name..."
-          className="w-full rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+        <select
+          value={lang}
+          onChange={(e) => handleLangChange(e.target.value as SupportedLanguage)}
+          className="rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-3 text-sm text-gray-900 dark:text-white shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+        >
+          {LANGUAGES.map(({ label, value }) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
       </div>
 
       {/* Error */}
