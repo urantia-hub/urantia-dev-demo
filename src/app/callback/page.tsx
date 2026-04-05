@@ -45,7 +45,7 @@ export default function CallbackPage() {
 
         const { data } = await res.json();
 
-        // Store session in localStorage (same format as @urantia/auth)
+        // Store session in localStorage (same format as @urantia/auth v0.2.0)
         const session = {
           user: {
             id: data.userId,
@@ -53,6 +53,7 @@ export default function CallbackPage() {
             scopes: data.scopes ?? [],
           },
           accessToken: data.accessToken,
+          refreshToken: data.refreshToken ?? null,
           expiresAt: data.expiresAt,
         };
         localStorage.setItem("urantia_auth_session", JSON.stringify(session));
