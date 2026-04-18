@@ -1,12 +1,25 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { api } from "@/lib/api";
-import type { Paragraph } from "@urantia/api";
+import type { EntityType, Paragraph, TopEntity } from "@urantia/api";
 
 type SearchMode = "semantic" | "keyword";
 
 type SearchResultItem = Paragraph & { rank?: number; similarity?: number };
+
+// Colors match the EntitySection entity-type palette so chips read consistently.
+const TYPE_COLORS: Record<EntityType, string> = {
+  being: "bg-blue-100 text-blue-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  place: "bg-green-100 text-green-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  order: "bg-purple-100 text-purple-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  race: "bg-amber-100 text-amber-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  religion: "bg-rose-100 text-rose-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  concept: "bg-slate-100 text-slate-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+};
+
+// Show at most 4 chips per result — keeps the card visually calm.
+const CHIPS_PER_RESULT = 4;
 
 const EXAMPLE_QUERIES = [
   "What happens after death?",
@@ -44,6 +57,30 @@ export function SearchSection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  // Paper ID -> topEntities aggregate, filled from a single list call on mount.
+  const [paperTopEntities, setPaperTopEntities] = useState<
+    Record<string, TopEntity[]>
+  >({});
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await api.papers.list({ include: "topEntities" });
+        if (cancelled) return;
+        const map: Record<string, TopEntity[]> = {};
+        for (const paper of res.data) {
+          if (paper.topEntities) map[paper.id] = paper.topEntities;
+        }
+        setPaperTopEntities(map);
+      } catch {
+        // Silent fail — chips are a nice-to-have, not essential.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSearch = useCallback(
     async (q?: string) => {
@@ -192,6 +229,21 @@ export function SearchSection() {
               <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-400">
                 {truncate(result.text)}
               </p>
+              {paperTopEntities[result.paperId]?.length ? (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {paperTopEntities[result.paperId]
+                    ?.slice(0, CHIPS_PER_RESULT)
+                    .map((e) => (
+                      <span
+                        key={e.id}
+                        title={`Cited ${e.count}x in this paper`}
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${TYPE_COLORS[e.type as EntityType] ?? ""}`}
+                      >
+                        {e.name}
+                      </span>
+                    ))}
+                </div>
+              ) : null}
               <a
                 href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${result.standardReferenceId}`}
                 target="_blank"
