@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const NAV_LINKS = [
   { label: "Search", href: "#search" },
+  { label: "Bible × UB", href: "#bible-search" },
   { label: "Quote", href: "#quote" },
   { label: "Audio", href: "#audio" },
   { label: "Entities", href: "#entities" },

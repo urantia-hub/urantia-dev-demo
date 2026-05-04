@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { SectionWrapper } from "@/components/SectionWrapper";
 import { SearchSection } from "@/components/sections/SearchSection";
+import { BibleSearchSection } from "@/components/sections/BibleSearchSection";
 import { QuoteSection } from "@/components/sections/QuoteSection";
 import { AudioSection } from "@/components/sections/AudioSection";
 import { EntitySection } from "@/components/sections/EntitySection";
@@ -28,6 +29,14 @@ export default function Home() {
             <SearchSection />
           </SectionWrapper>
         </div>
+        <SectionWrapper
+          id="bible-search"
+          title="Bible × Urantia Search"
+          subtitle="Search the entire Bible in plain English — every result ships with the Urantia paragraphs that parallel it. The only API of its kind."
+          variant="alt"
+        >
+          <BibleSearchSection />
+        </SectionWrapper>
         <SectionWrapper
           id="quote"
           title="Random Quote"
