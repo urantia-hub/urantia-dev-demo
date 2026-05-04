@@ -26,7 +26,10 @@ const CANON_BADGE: Record<BibleCanon, string> = {
   nt: "bg-blue-100 text-blue-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
 };
 
-function truncate(text: string, max = 280): string {
+const TEXT_PREVIEW = 280;
+const PARALLEL_PREVIEW = 220;
+
+function truncate(text: string, max: number): string {
   if (text.length <= max) return text;
   return text.slice(0, max).trimEnd() + "…";
 }
@@ -38,6 +41,7 @@ export function BibleSearchSection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  // Composite expansion keys: `${id}:text`, `${id}:list`, `up:${id}:${pid}:text`.
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   const handleSearch = useCallback(
@@ -73,11 +77,11 @@ export function BibleSearchSection() {
     handleSearch(example);
   };
 
-  const toggleExpanded = (id: string) => {
+  const toggleExpanded = (key: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
   };
@@ -163,7 +167,11 @@ export function BibleSearchSection() {
       {!loading && !error && results.length > 0 && (
         <div className="mt-6 space-y-4">
           {results.map((result) => {
-            const isExpanded = expanded.has(result.id);
+            const textKey = `${result.id}:text`;
+            const listKey = `${result.id}:list`;
+            const isTextExpanded = expanded.has(textKey);
+            const isListExpanded = expanded.has(listKey);
+            const textIsLong = result.text.length > TEXT_PREVIEW;
             return (
               <div
                 key={result.id}
@@ -183,53 +191,66 @@ export function BibleSearchSection() {
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-400">
-                  {truncate(result.text)}
+                  {isTextExpanded ? result.text : truncate(result.text, TEXT_PREVIEW)}
                 </p>
+                {textIsLong && (
+                  <button
+                    onClick={() => toggleExpanded(textKey)}
+                    className="mt-2 cursor-pointer text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
+                    {isTextExpanded ? "Read less" : "Read more"}
+                  </button>
+                )}
 
                 {result.urantiaParallels.length > 0 && (
                   <div className="mt-4 border-t border-gray-100 dark:border-gray-300/10 pt-3">
                     <button
-                      onClick={() => toggleExpanded(result.id)}
+                      onClick={() => toggleExpanded(listKey)}
                       className="flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors cursor-pointer"
                     >
-                      <span>{isExpanded ? "▾" : "▸"}</span>
+                      <span>{isListExpanded ? "▾" : "▸"}</span>
                       {result.urantiaParallels.length} related Urantia paragraph
                       {result.urantiaParallels.length === 1 ? "" : "s"}
                     </button>
-                    {isExpanded && (
+                    {isListExpanded && (
                       <div className="mt-3 space-y-3">
-                        {result.urantiaParallels.map((p) => (
-                          <div
-                            key={p.id}
-                            className="rounded-md border-l-2 border-primary/40 bg-gray-50 dark:bg-[#3b82f60d] py-2 pl-4 pr-2"
-                          >
-                            <div className="mb-1 flex flex-wrap items-center gap-2">
-                              <span className="text-xs font-semibold text-gray-900 dark:text-white">
-                                {p.standardReferenceId}
-                              </span>
-                              <span className="text-xs text-gray-400 dark:text-gray-400">
-                                &middot;
-                              </span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
-                                {p.paperTitle}
-                              </span>
-                              <span className="ml-auto text-xs text-gray-400 dark:text-gray-400">
-                                {(p.similarity * 100).toFixed(0)}%
-                              </span>
-                            </div>
-                            <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-400">
-                              {truncate(p.text, 220)}
-                            </p>
-                            <a
-                              href={`https://www.urantiahub.com/api/redirect/papers/by-standard-reference-id/${p.standardReferenceId}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-1.5 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                        {result.urantiaParallels.map((p) => {
+                          const pTextKey = `up:${result.id}:${p.id}:text`;
+                          const pTextExpanded = expanded.has(pTextKey);
+                          const pTextIsLong = p.text.length > PARALLEL_PREVIEW;
+                          return (
+                            <div
+                              key={p.id}
+                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 dark:bg-[#3b82f60d] py-2 pl-4 pr-2"
                             >
-                              Read on UrantiaHub ↗
-                            </a>
-                          </div>
-                        ))}
+                              <div className="mb-1 flex flex-wrap items-center gap-2">
+                                <span className="text-xs font-semibold text-gray-900 dark:text-white">
+                                  {p.standardReferenceId}
+                                </span>
+                                <span className="text-xs text-gray-400 dark:text-gray-400">
+                                  &middot;
+                                </span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  {p.paperTitle}
+                                </span>
+                                <span className="ml-auto text-xs text-gray-400 dark:text-gray-400">
+                                  {(p.similarity * 100).toFixed(0)}%
+                                </span>
+                              </div>
+                              <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-400">
+                                {pTextExpanded ? p.text : truncate(p.text, PARALLEL_PREVIEW)}
+                              </p>
+                              {pTextIsLong && (
+                                <button
+                                  onClick={() => toggleExpanded(pTextKey)}
+                                  className="mt-1.5 cursor-pointer text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                                >
+                                  {pTextExpanded ? "Read less" : "Read more"}
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
