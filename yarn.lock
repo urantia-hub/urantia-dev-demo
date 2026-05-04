@@ -554,10 +554,10 @@
   resolved "https://registry.npmjs.org/@unrs/resolver-binding-darwin-arm64/-/resolver-binding-darwin-arm64-1.11.1.tgz"
   integrity sha512-gPVA1UjRu1Y/IsB/dQEsp2V1pm44Of6+LWvbLc9SDk1c2KhhDRDBUkQCYVWe6f26uJb3fOK8saWMgtX8IrMk3g==
 
-"@urantia/api@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@urantia/api/-/api-0.2.0.tgz"
-  integrity sha512-ht5TL6/V03rJXPcgmqEUBa8G6fppx7mbgw9XvCAuccUaGg0XkEvyy51DMLsRuDlrF5z2JHUhIGVITQKXmIpQxw==
+"@urantia/api@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/@urantia/api/-/api-0.4.1.tgz"
+  integrity sha512-uw2J2eyPtJhXxlNWrQJUdjjylLUDcMWOQDNlx7guIScD8kJ1hwr5wNYLK9f28I43FWFsYZdLEKGxkE7VZZXfRg==
 
 "@urantia/auth@^0.1.0":
   version "0.1.0"
