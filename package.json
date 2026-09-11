@@ -11,7 +11,7 @@
   "dependencies": {
     "@urantia/api": "^0.4.1",
     "@urantia/auth": "^0.1.0",
-    "next": "^16.3.1",
+    "next": "^16.3.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
