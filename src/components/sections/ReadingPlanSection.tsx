@@ -135,12 +135,12 @@ export function ReadingPlanSection() {
           onChange={(e) => setTopic(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
           placeholder="Enter a topic, e.g. &quot;prayer&quot; or &quot;life after death&quot;..."
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={() => handleGenerate()}
           disabled={loading || !topic.trim()}
-          className="btn-primary-glow cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className=" cursor-pointer rounded-lg btn-amber px-6 py-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Generating\u2026" : "Generate Plan"}
         </button>
@@ -149,15 +149,15 @@ export function ReadingPlanSection() {
       {/* Duration selector */}
       <div className="mt-3 flex items-center gap-3">
         <span className="text-sm text-gray-400">Duration:</span>
-        <div className="flex gap-1 rounded-lg bg-gray-100 dark:bg-[#3b82f61a] p-1">
+        <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
           {[3, 5, 7].map((d) => (
             <button
               key={d}
               onClick={() => setDays(d)}
               className={`cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
                 days === d
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                  ? "btn-amber"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               {d} days
@@ -175,7 +175,7 @@ export function ReadingPlanSection() {
               <button
                 key={example}
                 onClick={() => handleExampleClick(example)}
-                className="cursor-pointer rounded-full border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-1.5 text-sm text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary dark:hover:text-[#3b82f6]"
+                className="cursor-pointer rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm text-gray-600 transition-colors hover:border-primary/40 hover:text-primary"
               >
                 {example}
               </button>
@@ -190,10 +190,10 @@ export function ReadingPlanSection() {
           {Array.from({ length: days }, (_, i) => (
             <div
               key={i}
-              className="animate-pulse rounded-lg border border-gray-100 dark:border-gray-300/15 p-5"
+              className="animate-pulse rounded-2xl border border-gray-100 p-5"
             >
-              <div className="mb-2 h-5 w-1/3 rounded bg-gray-200 dark:bg-gray-300/10" />
-              <div className="h-3 w-2/3 rounded bg-gray-100 dark:bg-gray-300/10" />
+              <div className="mb-2 h-5 w-1/3 rounded bg-gray-200" />
+              <div className="h-3 w-2/3 rounded bg-gray-100" />
             </div>
           ))}
         </div>
@@ -201,7 +201,7 @@ export function ReadingPlanSection() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+        <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -210,11 +210,11 @@ export function ReadingPlanSection() {
       {!loading && !error && plan.length > 0 && (
         <div className="mt-6">
           {/* Plan header */}
-          <div className="mb-4 rounded-lg border border-primary/20 bg-primary/5 dark:bg-primary/10 px-4 py-3">
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+          <div className="mb-4 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
+            <h3 className="text-base font-semibold text-gray-900">
               Reading Plan: {activeTopic}
             </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-sm text-gray-500">
               {plan.length} days &middot; {totalParagraphs} passages &middot; Built from semantic search results
             </p>
           </div>
@@ -226,7 +226,7 @@ export function ReadingPlanSection() {
               return (
                 <div
                   key={day.dayNumber}
-                  className="card-glow rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] shadow-sm transition-shadow hover:shadow-md"
+                  className=" rounded-lg border border-gray-200 bg-white"
                 >
                   {/* Day header — always visible */}
                   <button
@@ -237,7 +237,7 @@ export function ReadingPlanSection() {
                       {day.dayNumber}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                      <h4 className="text-sm font-semibold text-gray-900 truncate">
                         {day.title}
                       </h4>
                       <p className="text-xs text-gray-400">
@@ -257,19 +257,19 @@ export function ReadingPlanSection() {
 
                   {/* Expanded paragraphs */}
                   {isExpanded && (
-                    <div className="border-t border-gray-100 dark:border-gray-300/10 px-5 py-4 space-y-4">
+                    <div className="border-t border-gray-100 px-5 py-4 space-y-4">
                       {day.paragraphs.map((p) => (
                         <div key={p.id} className="text-sm">
                           <div className="mb-1 flex flex-wrap items-center gap-2">
-                            <span className="rounded-full bg-gray-100 dark:bg-[#3b82f61a] px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-[#3b82f6]">
+                            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
                               {p.standardReferenceId}
                             </span>
                             <span className="text-xs text-gray-400">
                               {p.paperTitle}
-                              {p.sectionTitle ? ` — ${p.sectionTitle}` : ""}
+                              {p.sectionTitle ? `, ${p.sectionTitle}` : ""}
                             </span>
                           </div>
-                          <p className="leading-relaxed text-gray-700 dark:text-gray-400">
+                          <p className="leading-relaxed text-gray-700">
                             {truncate(p.text)}
                           </p>
                           <a
@@ -290,15 +290,15 @@ export function ReadingPlanSection() {
           </div>
 
           {/* How it works note */}
-          <div className="mt-4 rounded-lg border border-gray-100 dark:border-gray-300/10 bg-gray-50 dark:bg-transparent px-4 py-3">
+          <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
             <p className="text-xs text-gray-400 leading-relaxed">
-              <span className="font-medium text-gray-500 dark:text-gray-300">How it works:</span>{" "}
+              <span className="font-medium text-gray-500">How it works:</span>{" "}
               This plan was generated client-side using the{" "}
-              <code className="rounded bg-gray-100 dark:bg-[#3b82f61a] px-1.5 py-0.5 text-[11px] font-mono text-primary">
+              <code className="rounded bg-gray-100 px-1.5 py-0.5 text-[11px] font-mono text-primary">
                 @urantia/api
               </code>{" "}
               SDK. Results are grouped by Paper into daily readings. Any developer can build their own reading plan experience with{" "}
-              <code className="rounded bg-gray-100 dark:bg-[#3b82f61a] px-1.5 py-0.5 text-[11px] font-mono text-primary">
+              <code className="rounded bg-gray-100 px-1.5 py-0.5 text-[11px] font-mono text-primary">
                 npm install @urantia/api
               </code>.
             </p>
@@ -308,8 +308,8 @@ export function ReadingPlanSection() {
 
       {/* Empty state */}
       {!loading && !error && hasGenerated && plan.length === 0 && (
-        <div className="mt-6 rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] py-10 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-6 rounded-lg border border-gray-100 bg-gray-50 py-10 text-center">
+          <p className="text-sm text-gray-500">
             No results found. Try a different topic.
           </p>
         </div>

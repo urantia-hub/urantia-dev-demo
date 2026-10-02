@@ -41,7 +41,7 @@ export function QuoteSection() {
   }, [fetchQuote]);
 
   const formatShareText = (q: Paragraph) =>
-    `"${q.text}"\n\n\u2014 ${q.paperTitle} (${q.standardReferenceId})`;
+    `"${q.text}"\n\n${q.paperTitle} (${q.standardReferenceId})`;
 
   const handleCopy = async () => {
     if (!quote) return;
@@ -71,22 +71,22 @@ export function QuoteSection() {
       {/* Loading skeleton */}
       {loading && !quote && (
         <div className="w-full max-w-3xl animate-pulse">
-          <div className="border-l-4 border-gray-200 dark:border-gray-300/15 pl-6">
-            <div className="mb-3 h-5 w-full rounded bg-gray-200 dark:bg-gray-300/10" />
-            <div className="mb-3 h-5 w-5/6 rounded bg-gray-200 dark:bg-gray-300/10" />
-            <div className="mb-3 h-5 w-4/6 rounded bg-gray-200 dark:bg-gray-300/10" />
-            <div className="h-5 w-3/6 rounded bg-gray-200 dark:bg-gray-300/10" />
+          <div className="border-l-4 border-gray-200 pl-6">
+            <div className="mb-3 h-5 w-full rounded bg-gray-200" />
+            <div className="mb-3 h-5 w-5/6 rounded bg-gray-200" />
+            <div className="mb-3 h-5 w-4/6 rounded bg-gray-200" />
+            <div className="h-5 w-3/6 rounded bg-gray-200" />
           </div>
           <div className="mt-6 flex justify-center gap-3">
-            <div className="h-10 w-28 rounded-lg bg-gray-200 dark:bg-gray-300/10" />
-            <div className="h-10 w-20 rounded-lg bg-gray-200 dark:bg-gray-300/10" />
+            <div className="h-10 w-28 rounded-lg bg-gray-200" />
+            <div className="h-10 w-20 rounded-lg bg-gray-200" />
           </div>
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="w-full max-w-3xl rounded-lg border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-center text-sm text-red-700 dark:text-red-400">
+        <div className="w-full max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700">
           {error}
         </div>
       )}
@@ -99,15 +99,15 @@ export function QuoteSection() {
         >
           {/* Quote text */}
           <blockquote className="border-l-4 border-primary/40 pl-6">
-            <p className="text-lg leading-relaxed text-gray-800 dark:text-gray-300 sm:text-xl md:text-2xl md:leading-relaxed">
+            <p className="text-lg leading-relaxed text-gray-800 sm:text-xl md:text-2xl md:leading-relaxed">
               {quote.text}
             </p>
           </blockquote>
 
           {/* Attribution */}
-          <p className="mt-4 pl-6 text-sm text-gray-400 dark:text-gray-400">
+          <p className="mt-4 pl-6 text-sm text-gray-400">
             {quote.paperTitle}{" "}
-            <span className="rounded-full bg-gray-100 dark:bg-[#3b82f61a] px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-[#3b82f6]">
+            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
               {quote.standardReferenceId}
             </span>
           </p>
@@ -125,20 +125,20 @@ export function QuoteSection() {
             <button
               onClick={fetchQuote}
               disabled={loading}
-              className="btn-primary-glow cursor-pointer rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className=" cursor-pointer rounded-lg btn-amber px-6 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? "Loading\u2026" : "Get Another Quote"}
             </button>
             <button
               onClick={handleCopy}
-              className="cursor-pointer rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary dark:hover:text-white"
+              className="cursor-pointer rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-primary/40 hover:text-primary"
             >
               {copied ? "Copied!" : "Copy"}
             </button>
             {canShare && (
               <button
                 onClick={handleShare}
-                className="cursor-pointer rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary dark:hover:text-white"
+                className="cursor-pointer rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:border-primary/40 hover:text-primary"
               >
                 Share
               </button>

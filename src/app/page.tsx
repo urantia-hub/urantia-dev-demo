@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { MoreDemos } from "@/components/MoreDemos";
 import { SectionWrapper } from "@/components/SectionWrapper";
 import { SearchSection } from "@/components/sections/SearchSection";
 import { BibleSearchSection } from "@/components/sections/BibleSearchSection";
@@ -11,84 +12,50 @@ import { ReadingPlanSection } from "@/components/sections/ReadingPlanSection";
 import { AccountSection } from "@/components/sections/AccountSection";
 import { RoadmapSection } from "@/components/sections/RoadmapSection";
 import { Footer } from "@/components/Footer";
+import { DEMOS, type DemoId } from "@/lib/demos";
+
+function Demo({ id, variant, children }: { id: DemoId; variant?: "default" | "alt"; children: React.ReactNode }) {
+  return (
+    <SectionWrapper id={id} title={DEMOS[id].title} subtitle={DEMOS[id].subtitle} variant={variant}>
+      {children}
+    </SectionWrapper>
+  );
+}
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <main>
-        {/* Dark wrapper lets the hero glow bleed into the first section */}
-        <div className="relative overflow-hidden bg-gray-950">
-          <Hero />
-          <SectionWrapper
-            id="search"
-            title="Semantic Search"
-            subtitle="Ask a question and find conceptually related passages — not just keyword matches."
-            variant="transparent"
-          >
-            <SearchSection />
-          </SectionWrapper>
-        </div>
-        <SectionWrapper
-          id="bible-search"
-          title="Bible × Urantia Search"
-          subtitle="Search the entire Bible in plain English — every result ships with the Urantia paragraphs that parallel it. The only API of its kind."
-          variant="alt"
-        >
+        <Hero />
+        <Demo id="search">
+          <SearchSection />
+        </Demo>
+        <MoreDemos />
+        <Demo id="bible-search">
           <BibleSearchSection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="quote"
-          title="Random Quote"
-          subtitle="Discover inspiring passages from the Urantia Papers."
-          variant="alt"
-        >
+        </Demo>
+        <Demo id="quote" variant="alt">
           <QuoteSection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="audio"
-          title="Audio Player"
-          subtitle="Listen to any passage read aloud in multiple voices."
-        >
+        </Demo>
+        <Demo id="audio">
           <AudioSection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="entities"
-          title="Entity Explorer"
-          subtitle="Browse 4,400+ beings, places, and concepts mentioned in the Urantia Papers."
-          variant="alt"
-        >
+        </Demo>
+        <Demo id="entities" variant="alt">
           <EntitySection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="lookup"
-          title="Passage Lookup"
-          subtitle="Look up any passage by reference and see its surrounding context."
-        >
+        </Demo>
+        <Demo id="lookup">
           <LookupSection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="reading-plan"
-          title="Reading Plan Builder"
-          subtitle="Generate a multi-day reading plan from any topic — powered by semantic search."
-          variant="alt"
-        >
+        </Demo>
+        <Demo id="reading-plan" variant="alt">
           <ReadingPlanSection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="account"
-          title="Your Account"
-          subtitle="Sign in to manage bookmarks, notes, reading progress, and preferences — powered by @urantia/auth."
-        >
+        </Demo>
+        <Demo id="account">
           <AccountSection />
-        </SectionWrapper>
-        <SectionWrapper
-          id="roadmap"
-          title="Coming Soon"
-          subtitle="What we're building next for the Urantia community."
-        >
+        </Demo>
+        <Demo id="roadmap" variant="alt">
           <RoadmapSection />
-        </SectionWrapper>
+        </Demo>
       </main>
       <Footer />
     </>

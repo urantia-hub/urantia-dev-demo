@@ -21,9 +21,9 @@ const CANON_LABELS: Record<BibleCanon, string> = {
 };
 
 const CANON_BADGE: Record<BibleCanon, string> = {
-  ot: "bg-amber-100 text-amber-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  deuterocanon: "bg-purple-100 text-purple-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  nt: "bg-blue-100 text-blue-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  ot: "bg-amber-wash text-amber-ink",
+  deuterocanon: "bg-[#f3ece2] text-[#6b4f2a]",
+  nt: "bg-[#e6f0ee] text-[#1f5a54]",
 };
 
 const TEXT_PREVIEW = 280;
@@ -96,28 +96,28 @@ export function BibleSearchSection() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          placeholder="Ask the Bible — and see the matching Urantia paragraphs alongside…"
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          placeholder="Ask the Bible, and see the matching Urantia paragraphs alongside…"
+          className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={() => handleSearch()}
           disabled={loading || !query.trim()}
-          className="btn-primary-glow cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className=" cursor-pointer rounded-lg btn-amber px-6 py-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Searching…" : "Search"}
         </button>
       </div>
 
       {/* Canon toggle */}
-      <div className="mt-3 flex gap-1 rounded-lg bg-gray-100 dark:bg-[#3b82f61a] p-1 self-start w-fit">
+      <div className="mt-3 flex gap-1 rounded-lg bg-gray-100 p-1 self-start w-fit">
         {(["all", "ot", "deuterocanon", "nt"] as const).map((c) => (
           <button
             key={c}
             onClick={() => setCanon(c)}
             className={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
               canon === c
-                ? "bg-primary text-white shadow-sm"
-                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                ? "btn-amber"
+                : "text-gray-600 hover:text-gray-900"
             }`}
           >
             {c === "all" ? "All books" : CANON_LABELS[c]}
@@ -133,7 +133,7 @@ export function BibleSearchSection() {
               <button
                 key={example}
                 onClick={() => handleExampleClick(example)}
-                className="cursor-pointer rounded-full border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-1.5 text-sm text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary dark:hover:text-[#3b82f6]"
+                className="cursor-pointer rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm text-gray-600 transition-colors hover:border-primary/40 hover:text-primary"
               >
                 {example}
               </button>
@@ -147,19 +147,19 @@ export function BibleSearchSection() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="animate-pulse rounded-lg border border-gray-100 dark:border-gray-300/15 p-5"
+              className="animate-pulse rounded-2xl border border-gray-100 p-5"
             >
-              <div className="mb-3 h-4 w-1/4 rounded bg-gray-200 dark:bg-gray-300/10" />
-              <div className="mb-2 h-3 w-full rounded bg-gray-100 dark:bg-gray-300/10" />
-              <div className="mb-2 h-3 w-5/6 rounded bg-gray-100 dark:bg-gray-300/10" />
-              <div className="h-3 w-2/3 rounded bg-gray-100 dark:bg-gray-300/10" />
+              <div className="mb-3 h-4 w-1/4 rounded bg-gray-200" />
+              <div className="mb-2 h-3 w-full rounded bg-gray-100" />
+              <div className="mb-2 h-3 w-5/6 rounded bg-gray-100" />
+              <div className="h-3 w-2/3 rounded bg-gray-100" />
             </div>
           ))}
         </div>
       )}
 
       {error && (
-        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+        <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -175,10 +175,10 @@ export function BibleSearchSection() {
             return (
               <div
                 key={result.id}
-                className="card-glow rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
+                className=" rounded-2xl border border-gray-200 bg-white p-5"
               >
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  <span className="text-sm font-semibold text-gray-900">
                     {result.reference}
                   </span>
                   <span
@@ -186,11 +186,11 @@ export function BibleSearchSection() {
                   >
                     {CANON_LABELS[result.canon]}
                   </span>
-                  <span className="ml-auto text-xs text-gray-400 dark:text-gray-400">
+                  <span className="ml-auto text-xs text-gray-400">
                     Similarity: {(result.similarity * 100).toFixed(1)}%
                   </span>
                 </div>
-                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-400">
+                <p className="text-sm leading-relaxed text-gray-700">
                   {isTextExpanded ? result.text : truncate(result.text, TEXT_PREVIEW)}
                 </p>
                 {textIsLong && (
@@ -203,7 +203,7 @@ export function BibleSearchSection() {
                 )}
 
                 {result.urantiaParallels.length > 0 && (
-                  <div className="mt-4 border-t border-gray-100 dark:border-gray-300/10 pt-3">
+                  <div className="mt-4 border-t border-gray-100 pt-3">
                     <button
                       onClick={() => toggleExpanded(listKey)}
                       className="flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors cursor-pointer"
@@ -221,23 +221,23 @@ export function BibleSearchSection() {
                           return (
                             <div
                               key={p.id}
-                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 dark:bg-[#3b82f60d] py-2 pl-4 pr-2"
+                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 py-2 pl-4 pr-2"
                             >
                               <div className="mb-1 flex flex-wrap items-center gap-2">
-                                <span className="text-xs font-semibold text-gray-900 dark:text-white">
+                                <span className="text-xs font-semibold text-gray-900">
                                   {p.standardReferenceId}
                                 </span>
-                                <span className="text-xs text-gray-400 dark:text-gray-400">
+                                <span className="text-xs text-gray-400">
                                   &middot;
                                 </span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                <span className="text-xs text-gray-500">
                                   {p.paperTitle}
                                 </span>
-                                <span className="ml-auto text-xs text-gray-400 dark:text-gray-400">
+                                <span className="ml-auto text-xs text-gray-400">
                                   {(p.similarity * 100).toFixed(0)}%
                                 </span>
                               </div>
-                              <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-400">
+                              <p className="text-xs leading-relaxed text-gray-700">
                                 {pTextExpanded ? p.text : truncate(p.text, PARALLEL_PREVIEW)}
                               </p>
                               {pTextIsLong && (
@@ -262,8 +262,8 @@ export function BibleSearchSection() {
       )}
 
       {!loading && !error && hasSearched && results.length === 0 && (
-        <div className="mt-6 rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] py-10 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-6 rounded-lg border border-gray-100 bg-gray-50 py-10 text-center">
+          <p className="text-sm text-gray-500">
             No results found. Try a different query or canon filter.
           </p>
         </div>

@@ -110,18 +110,18 @@ function BookmarksTab({ token }: { token: string }) {
           value={ref}
           onChange={(e) => setRef(e.target.value)}
           placeholder="Reference (e.g., 2:0.1)"
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <input
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           placeholder="Category (optional)"
-          className="w-full sm:w-40 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="w-full sm:w-40 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={handleAdd}
           disabled={adding || !ref.trim()}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
+          className="rounded-lg btn-amber px-4 py-2 text-sm font-medium disabled:opacity-50"
         >
           {adding ? "Adding..." : "Add"}
         </button>
@@ -136,18 +136,18 @@ function BookmarksTab({ token }: { token: string }) {
           {bookmarks.map((b) => (
             <div
               key={b.id}
-              className="flex items-start gap-3 rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-3"
+              className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-3"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-gray-100 dark:bg-[#3b82f61a] px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-[#3b82f6]">
+                  <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
                     {b.paragraph.standardReferenceId}
                   </span>
                   {b.category && (
                     <span className="text-xs text-gray-400">{b.category}</span>
                   )}
                 </div>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-xs text-gray-500">
                   {truncate(b.paragraph.text)}
                 </p>
               </div>
@@ -218,19 +218,19 @@ function NotesTab({ token }: { token: string }) {
           value={ref}
           onChange={(e) => setRef(e.target.value)}
           placeholder="Reference (e.g., 2:0.1)"
-          className="rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Your note..."
           rows={2}
-          className="rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={handleAdd}
           disabled={adding || !ref.trim() || !text.trim()}
-          className="self-start rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
+          className="self-start rounded-lg btn-amber px-4 py-2 text-sm font-medium disabled:opacity-50"
         >
           {adding ? "Saving..." : "Save Note"}
         </button>
@@ -245,13 +245,13 @@ function NotesTab({ token }: { token: string }) {
           {notes.map((n) => (
             <div
               key={n.id}
-              className="flex items-start gap-3 rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-3"
+              className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-3"
             >
               <div className="flex-1 min-w-0">
-                <span className="rounded-full bg-gray-100 dark:bg-[#3b82f61a] px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-[#3b82f6]">
+                <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
                   {n.paragraph.standardReferenceId}
                 </span>
-                <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{n.text}</p>
+                <p className="mt-1 text-sm text-gray-700">{n.text}</p>
                 <p className="mt-1 text-xs text-gray-400">
                   {new Date(n.createdAt).toLocaleDateString()}
                 </p>
@@ -320,12 +320,12 @@ function ProgressTab({ token }: { token: string }) {
           value={refs}
           onChange={(e) => setRefs(e.target.value)}
           placeholder="Refs to mark as read (e.g., 1:0.1, 1:0.2, 1:0.3)"
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={handleMark}
           disabled={marking || !refs.trim()}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
+          className="rounded-lg btn-amber px-4 py-2 text-sm font-medium disabled:opacity-50"
         >
           {marking ? "Marking..." : "Mark Read"}
         </button>
@@ -340,10 +340,10 @@ function ProgressTab({ token }: { token: string }) {
           {progress.map((p) => (
             <div
               key={p.paperId}
-              className="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-3"
+              className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <p className="text-sm font-medium text-gray-900">
                   Paper {p.paperId}: {p.paperTitle}
                 </p>
                 <p className="text-xs text-gray-400">
@@ -351,13 +351,13 @@ function ProgressTab({ token }: { token: string }) {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="h-2 w-24 rounded-full bg-gray-200 dark:bg-gray-700">
+                <div className="h-2 w-24 rounded-full bg-gray-200">
                   <div
-                    className="h-2 rounded-full bg-primary"
+                    className="h-2 rounded-full bg-amber"
                     style={{ width: `${Math.min(p.percentage, 100)}%` }}
                   />
                 </div>
-                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 w-12 text-right">
+                <span className="text-xs font-medium text-gray-500 w-12 text-right">
                   {p.percentage.toFixed(1)}%
                 </span>
               </div>
@@ -412,12 +412,12 @@ function PreferencesTab({ token }: { token: string }) {
         value={prefs}
         onChange={(e) => setPrefs(e.target.value)}
         rows={6}
-        className="w-full rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-3 py-2 font-mono text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-mono text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
       <button
         onClick={handleSave}
         disabled={saving}
-        className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
+        className="rounded-lg btn-amber px-4 py-2 text-sm font-medium disabled:opacity-50"
       >
         {saved ? "Saved!" : saving ? "Saving..." : "Save Preferences"}
       </button>
@@ -448,12 +448,12 @@ export function AccountSection() {
   if (!session) {
     return (
       <div className="text-center py-8">
-        <p className="mb-4 text-gray-500 dark:text-gray-400">
-          Sign in to demo authenticated endpoints — bookmarks, notes, reading progress, and preferences.
+        <p className="mb-4 text-gray-500">
+          Sign in to demo authenticated endpoints: bookmarks, notes, reading progress, and preferences.
         </p>
         <button
           onClick={startSignIn}
-          className="btn-primary-glow rounded-lg bg-primary px-8 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-primary/90"
+          className=" rounded-lg btn-amber px-8 py-3 text-base font-medium transition-colors"
         >
           Sign in with Urantia
         </button>
@@ -486,31 +486,31 @@ export function AccountSection() {
       {/* User header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-500">
             Signed in as{" "}
-            <span className="font-medium text-gray-900 dark:text-white">
+            <span className="font-medium text-gray-900">
               {session.user.email}
             </span>
           </p>
         </div>
         <button
           onClick={handleSignOut}
-          className="rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-red-400 hover:text-red-400"
+          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-600 hover:border-red-400 hover:text-red-400"
         >
           Sign Out
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 rounded-lg bg-gray-100 dark:bg-[#3b82f61a] p-1 mb-6">
+      <div className="flex gap-1 rounded-lg bg-gray-100 p-1 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? "bg-primary text-white shadow-sm"
-                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                ? "btn-amber"
+                : "text-gray-600 hover:text-gray-900"
             }`}
           >
             {tab.label}

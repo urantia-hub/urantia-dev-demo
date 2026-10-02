@@ -25,7 +25,7 @@ export default function CallbackPage() {
       // Verify state for CSRF protection
       const savedState = sessionStorage.getItem("urantia_auth_state");
       if (state && savedState && state !== savedState) {
-        setError("State mismatch — possible CSRF attack.");
+        setError("State mismatch. This can be a CSRF attack, so sign in again.");
         return;
       }
       sessionStorage.removeItem("urantia_auth_state");
@@ -70,12 +70,12 @@ export default function CallbackPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-950">
-        <div className="max-w-md rounded-lg border border-red-500/20 bg-red-500/10 p-6 text-center">
-          <h1 className="text-lg font-semibold text-red-400">
+      <div className="flex min-h-screen items-center justify-center bg-surface">
+        <div className="max-w-md rounded-2xl border border-red-200 bg-white p-6 text-center">
+          <h1 className="text-lg font-semibold text-red-700">
             Authentication Error
           </h1>
-          <p className="mt-2 text-sm text-red-300">{error}</p>
+          <p className="mt-2 text-sm text-red-700">{error}</p>
           <a
             href="/"
             className="mt-4 inline-block text-sm text-primary hover:underline"
@@ -88,10 +88,10 @@ export default function CallbackPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-950">
+    <div className="flex min-h-screen items-center justify-center bg-surface">
       <div className="text-center">
         <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        <p className="mt-4 text-sm text-gray-400">Signing you in...</p>
+        <p className="mt-4 text-sm text-ink-soft">Signing you in...</p>
       </div>
     </div>
   );
