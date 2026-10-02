@@ -20,7 +20,7 @@ export const DEMOS = {
   },
   entities: {
     title: "Entity Explorer",
-    subtitle: "Browse 4,400+ beings, places, and concepts in the Urantia Papers.",
+    subtitle: "Browse more than 4,400 entities: the beings, places, and concepts in the Urantia Papers.",
   },
   lookup: {
     title: "Passage Lookup",

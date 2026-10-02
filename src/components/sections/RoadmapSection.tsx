@@ -3,7 +3,7 @@ const ROADMAP_ITEMS = [
   {
     title: "Translations",
     description:
-      "Spanish, French, Portuguese, German, and Korean. AI translations of all 14,500+ paragraphs.",
+      "Spanish, French, Portuguese, German, and Korean. AI translations of more than 14,500 paragraphs.",
   },
   {
     title: "ElevenLabs Audio",

@@ -5,7 +5,7 @@ const INDEX: DemoId[] = ["bible-search", "quote", "audio", "entities", "lookup",
 
 export function MoreDemos() {
   return (
-    <section id="more-demos" className="scroll-mt-20 border-b border-line bg-surface py-16 md:py-20">
+    <section id="more-demos" className="scroll-mt-28 border-b border-line bg-surface py-16 md:py-20">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="text-2xl font-semibold tracking-tight text-ink sm:text-[28px]">More demos</h2>
         <p className="mt-2 text-base text-ink-soft">Each one calls the same public API.</p>
