@@ -10,12 +10,12 @@ type SearchResultItem = Paragraph & { rank?: number; similarity?: number };
 
 // Colors match the EntitySection entity-type palette so chips read consistently.
 const TYPE_COLORS: Record<EntityType, string> = {
-  being: "bg-blue-100 text-blue-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  place: "bg-green-100 text-green-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  order: "bg-purple-100 text-purple-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  race: "bg-amber-100 text-amber-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  religion: "bg-rose-100 text-rose-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
-  concept: "bg-slate-100 text-slate-700 dark:bg-[#3b82f61a] dark:text-[#3b82f6]",
+  being: "bg-amber-wash text-amber-ink",
+  place: "bg-[#e6f0ee] text-[#1f5a54]",
+  order: "bg-[#f3ece2] text-[#6b4f2a]",
+  race: "bg-[#efeae2] text-[#5c5040]",
+  religion: "bg-[#eef0e6] text-[#4f5a2c]",
+  concept: "bg-[#f1f3f3] text-ink-soft",
 };
 
 const CHIPS_PER_RESULT = 4;
@@ -45,7 +45,7 @@ function ScoreBadge({ result, mode }: { result: SearchResultItem; mode: SearchMo
       : `#${value}`;
 
   return (
-    <span className="text-xs text-gray-400 dark:text-gray-400">
+    <span className="text-xs text-gray-400">
       {label}: {display}
     </span>
   );
@@ -148,25 +148,25 @@ export function SearchSection() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Ask a question about the Urantia Papers..."
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-3 text-base text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         <button
           onClick={() => handleSearch()}
           disabled={loading || !query.trim()}
-          className="btn-primary-glow cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className=" cursor-pointer rounded-lg btn-amber px-6 py-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? "Searching…" : "Search"}
         </button>
       </div>
 
       {/* Mode toggle */}
-      <div className="mt-3 flex gap-1 rounded-lg bg-gray-100 dark:bg-[#3b82f61a] p-1 self-start w-fit">
+      <div className="mt-3 flex gap-1 rounded-lg bg-gray-100 p-1 self-start w-fit">
         <button
           onClick={() => setMode("semantic")}
           className={`cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
             mode === "semantic"
-              ? "bg-primary text-white shadow-sm"
-              : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              ? "btn-amber"
+              : "text-gray-600 hover:text-gray-900"
           }`}
         >
           Semantic
@@ -175,8 +175,8 @@ export function SearchSection() {
           onClick={() => setMode("keyword")}
           className={`cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
             mode === "keyword"
-              ? "bg-primary text-white shadow-sm"
-              : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              ? "btn-amber"
+              : "text-gray-600 hover:text-gray-900"
           }`}
         >
           Keyword
@@ -192,7 +192,7 @@ export function SearchSection() {
               <button
                 key={example}
                 onClick={() => handleExampleClick(example)}
-                className="cursor-pointer rounded-full border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] px-4 py-1.5 text-sm text-gray-600 dark:text-gray-400 shadow-sm transition-colors hover:border-primary/40 hover:text-primary dark:hover:text-[#3b82f6]"
+                className="cursor-pointer rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm text-gray-600 transition-colors hover:border-primary/40 hover:text-primary"
               >
                 {example}
               </button>
@@ -207,12 +207,12 @@ export function SearchSection() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="animate-pulse rounded-lg border border-gray-100 dark:border-gray-300/15 p-5"
+              className="animate-pulse rounded-2xl border border-gray-100 p-5"
             >
-              <div className="mb-3 h-4 w-1/4 rounded bg-gray-200 dark:bg-gray-300/10" />
-              <div className="mb-2 h-3 w-full rounded bg-gray-100 dark:bg-gray-300/10" />
-              <div className="mb-2 h-3 w-5/6 rounded bg-gray-100 dark:bg-gray-300/10" />
-              <div className="h-3 w-2/3 rounded bg-gray-100 dark:bg-gray-300/10" />
+              <div className="mb-3 h-4 w-1/4 rounded bg-gray-200" />
+              <div className="mb-2 h-3 w-full rounded bg-gray-100" />
+              <div className="mb-2 h-3 w-5/6 rounded bg-gray-100" />
+              <div className="h-3 w-2/3 rounded bg-gray-100" />
             </div>
           ))}
         </div>
@@ -220,7 +220,7 @@ export function SearchSection() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 rounded-lg border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+        <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -242,24 +242,24 @@ export function SearchSection() {
             return (
               <div
                 key={result.id}
-                className="card-glow rounded-lg border border-gray-200 dark:border-gray-300/15 bg-white dark:bg-[#3b82f61a] p-5 shadow-sm transition-shadow hover:shadow-md"
+                className=" rounded-2xl border border-gray-200 bg-white p-5"
               >
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  <span className="text-sm font-semibold text-gray-900">
                     Paper {result.paperId}
                   </span>
-                  <span className="text-sm text-gray-400 dark:text-gray-400">&middot;</span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-gray-400">&middot;</span>
+                  <span className="text-sm text-gray-500">
                     {result.paperTitle}
                   </span>
-                  <span className="rounded-full bg-gray-100 dark:bg-[#3b82f61a] px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-[#3b82f6]">
+                  <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
                     {result.standardReferenceId}
                   </span>
                   <span className="ml-auto">
                     <ScoreBadge result={result} mode={mode} />
                   </span>
                 </div>
-                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-400">
+                <p className="text-sm leading-relaxed text-gray-700">
                   {isTextExpanded ? result.text : truncate(result.text, TEXT_PREVIEW)}
                 </p>
                 {textIsLong && (
@@ -287,7 +287,7 @@ export function SearchSection() {
                 ) : null}
 
                 {bibleParallels.length > 0 && (
-                  <div className="mt-4 border-t border-gray-100 dark:border-gray-300/10 pt-3">
+                  <div className="mt-4 border-t border-gray-100 pt-3">
                     <button
                       onClick={() => toggleExpanded(bibleKey)}
                       className="flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors cursor-pointer"
@@ -305,17 +305,17 @@ export function SearchSection() {
                           return (
                             <div
                               key={p.chunkId}
-                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 dark:bg-[#3b82f60d] py-2 pl-4 pr-2"
+                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 py-2 pl-4 pr-2"
                             >
                               <div className="mb-1 flex flex-wrap items-center gap-2">
-                                <span className="text-xs font-semibold text-gray-900 dark:text-white">
+                                <span className="text-xs font-semibold text-gray-900">
                                   {p.reference}
                                 </span>
-                                <span className="ml-auto text-xs text-gray-400 dark:text-gray-400">
+                                <span className="ml-auto text-xs text-gray-400">
                                   {(p.similarity * 100).toFixed(0)}%
                                 </span>
                               </div>
-                              <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-400">
+                              <p className="text-xs leading-relaxed text-gray-700">
                                 {pTextExpanded ? p.text : truncate(p.text, PARALLEL_PREVIEW)}
                               </p>
                               {pTextIsLong && (
@@ -335,7 +335,7 @@ export function SearchSection() {
                 )}
 
                 {urantiaParallels.length > 0 && (
-                  <div className="mt-3 border-t border-gray-100 dark:border-gray-300/10 pt-3">
+                  <div className="mt-3 border-t border-gray-100 pt-3">
                     <button
                       onClick={() => toggleExpanded(urantiaKey)}
                       className="flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors cursor-pointer"
@@ -353,23 +353,23 @@ export function SearchSection() {
                           return (
                             <div
                               key={p.id}
-                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 dark:bg-[#3b82f60d] py-2 pl-4 pr-2"
+                              className="rounded-md border-l-2 border-primary/40 bg-gray-50 py-2 pl-4 pr-2"
                             >
                               <div className="mb-1 flex flex-wrap items-center gap-2">
-                                <span className="text-xs font-semibold text-gray-900 dark:text-white">
+                                <span className="text-xs font-semibold text-gray-900">
                                   {p.standardReferenceId}
                                 </span>
-                                <span className="text-xs text-gray-400 dark:text-gray-400">
+                                <span className="text-xs text-gray-400">
                                   &middot;
                                 </span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                <span className="text-xs text-gray-500">
                                   {p.paperTitle}
                                 </span>
-                                <span className="ml-auto text-xs text-gray-400 dark:text-gray-400">
+                                <span className="ml-auto text-xs text-gray-400">
                                   {(p.similarity * 100).toFixed(0)}%
                                 </span>
                               </div>
-                              <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-400">
+                              <p className="text-xs leading-relaxed text-gray-700">
                                 {pTextExpanded ? p.text : truncate(p.text, PARALLEL_PREVIEW)}
                               </p>
                               {pTextIsLong && (
@@ -395,8 +395,8 @@ export function SearchSection() {
 
       {/* Empty state */}
       {!loading && !error && hasSearched && results.length === 0 && (
-        <div className="mt-6 rounded-lg border border-gray-100 dark:border-gray-300/15 bg-gray-50 dark:bg-[#3b82f61a] py-10 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-6 rounded-lg border border-gray-100 bg-gray-50 py-10 text-center">
+          <p className="text-sm text-gray-500">
             No results found. Try rephrasing your query or switching search
             modes.
           </p>

@@ -1,101 +1,111 @@
 @import "tailwindcss";
 
+/*
+ * urantia.dev design tokens (Luma family). Light only.
+ * Amber is a fill behind ink text. Amber-colored text uses --amber-ink.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --color-primary: #2563EB;
-  --color-primary-light: #3B82F6;
-  --color-primary-dark: #1D4ED8;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0b0f;
-    --foreground: #9ca3af;
-  }
-}
-
-:root {
-  --color-faint-blue: #3b82f61a;
+  --canvas: #ffffff;
+  --surface: #fbf8f3;
+  --ink: #0f2a2e;
+  --ink-soft: #4b5f61;
+  --ink-faint: #7b8b8c;
+  --line: #ebe6dd;
+  --amber: #f2b441;
+  --amber-hover: #f6c463;
+  --amber-ink: #8a5a00;
+  --amber-wash: #fdf4e0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--color-primary);
-  --color-primary-light: var(--color-primary-light);
-  --color-primary-dark: var(--color-primary-dark);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-amber: var(--amber);
+  --color-amber-hover: var(--amber-hover);
+  --color-amber-ink: var(--amber-ink);
+  --color-amber-wash: var(--amber-wash);
+
+  /* `primary` is the readable amber, for links, borders, rings, and accents. */
+  --color-primary: var(--amber-ink);
+  --color-primary-light: var(--amber);
+  --color-primary-dark: #6f4800;
+
+  /* Warm the gray scale toward the teal ink, so every gray class matches. */
+  --color-gray-50: #fbf8f3;
+  --color-gray-100: #f5f1ea;
+  --color-gray-200: #ebe6dd;
+  --color-gray-300: #d9d3c8;
+  --color-gray-400: #9aa6a7;
+  --color-gray-500: #7b8b8c;
+  --color-gray-600: #4b5f61;
+  --color-gray-700: #36494b;
+  --color-gray-800: #1f3538;
+  --color-gray-900: #0f2a2e;
+  --color-gray-950: #0a1d20;
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-/* Base styles */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--canvas);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Focus ring styles */
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--amber-ink);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection color */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 ::selection {
-  background-color: rgba(37, 99, 235, 0.15);
+  background-color: var(--amber-wash);
   color: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
-  ::selection {
-    background-color: rgba(37, 99, 235, 0.3);
-  }
+/* The one filled action style: amber pill with ink text. */
+.btn-amber {
+  border-radius: 999px;
+  background-color: var(--amber);
+  color: var(--ink);
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+.btn-amber:hover {
+  background-color: var(--amber-hover);
+}
+.btn-amber:disabled {
+  opacity: 0.5;
 }
 
-/* Glow animation for ambient background effects */
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+/* The quiet action style: outlined pill. */
+.btn-quiet {
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-weight: 500;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
-
-@keyframes glow-shift {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.1); }
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 4s ease-in-out infinite;
-}
-
-.animate-glow-shift {
-  animation: glow-shift 6s ease-in-out infinite;
-}
-
-/* Button glow for primary buttons in dark mode */
-@media (prefers-color-scheme: dark) {
-  .btn-primary-glow {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3), 0 0 6px rgba(37, 99, 235, 0.2);
-    transition: box-shadow 0.3s ease, background-color 0.2s ease;
-  }
-  .btn-primary-glow:hover {
-    box-shadow: 0 0 30px rgba(37, 99, 235, 0.5), 0 0 10px rgba(37, 99, 235, 0.3);
-  }
-
-  /* Subtle glow for cards and inputs */
-  .card-glow {
-    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.08), 0 0 20px rgba(37, 99, 235, 0.06);
-    transition: box-shadow 0.3s ease;
-  }
-  .card-glow:hover {
-    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15), 0 0 30px rgba(37, 99, 235, 0.1);
-  }
+.btn-quiet:hover {
+  border-color: #d9d3c8;
+  background-color: var(--surface);
 }
