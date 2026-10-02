@@ -24,7 +24,8 @@ Interactive demo site for the [Urantia Papers API](https://urantia.dev), showcas
 
 ## Related Projects
 
-- [urantia.dev](https://urantia.dev) — API documentation
+- [urantia.dev](https://urantia.dev) — Project home
+- [docs.urantia.dev](https://docs.urantia.dev) — API documentation
 - [api.urantia.dev](https://api.urantia.dev) — Live API
 - [urantiahub.com](https://urantiahub.com) — Reading platform
 - [@urantia/api](https://www.npmjs.com/package/@urantia/api) — TypeScript SDK (used by this demo)
