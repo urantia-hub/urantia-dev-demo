@@ -15,7 +15,6 @@ export const TOP_LINKS: TopLink[] = [
   { label: "Docs", href: "https://docs.urantia.dev/" },
   { label: "API reference", href: "https://docs.urantia.dev/api-reference/introduction" },
   { label: "Demo", href: "https://demo.urantia.dev/", current: true },
-  { label: "GitHub", href: "https://github.com/urantia-hub/urantia-dev-api" },
 ];
 
 export const FOOTER_COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
