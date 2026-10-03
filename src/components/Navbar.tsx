@@ -18,11 +18,11 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur">
-      {/* Shared top bar: the same on urantia.dev and the demo. */}
+      {/* Shared top bar: the same pixel sizes as the urantia.dev top bar. */}
       <div className="border-b border-line">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <a href={HOME_URL} className="flex shrink-0 items-center gap-2 text-[15px] font-semibold tracking-tight text-ink">
-            <Mark />
+          <a href={HOME_URL} className="flex shrink-0 items-center gap-2 text-[16px] font-semibold leading-6 tracking-[-0.01em] text-ink">
+            <Mark className="h-[22px] w-[22px]" />
             urantia.dev
           </a>
 
@@ -78,9 +78,9 @@ export function Navbar() {
         )}
       </div>
 
-      {/* Demo sections. Scrolls sideways on a phone instead of wrapping. */}
+      {/* Demo sections. Text lines up with the logo; scrolls sideways on a phone. */}
       <nav aria-label="Demos" className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-1.5 sm:px-6 [scrollbar-width:none]">
+        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-1 py-1.5 sm:px-3 [scrollbar-width:none]">
           {SECTION_LINKS.map((link) => (
             <a
               key={link.href}

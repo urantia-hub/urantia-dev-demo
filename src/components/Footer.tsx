@@ -8,8 +8,8 @@ export function Footer() {
       <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div className="col-span-2 sm:col-span-1">
-            <a href={HOME_URL} className="inline-flex items-center gap-2 text-[15px] font-semibold tracking-tight text-ink">
-              <Mark />
+            <a href={HOME_URL} className="inline-flex items-center gap-2 text-[16px] font-semibold leading-6 tracking-[-0.01em] text-ink">
+              <Mark className="h-[22px] w-[22px]" />
               urantia.dev
             </a>
             <p className="mt-3 max-w-[16rem] text-sm leading-relaxed text-ink-soft">{PRODUCT_LINE}</p>
