@@ -1,5 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#0f2a2e"/>
-  <path d="M22 18v18a10 10 0 0 0 20 0V18" fill="none" stroke="#f2b441" stroke-width="6" stroke-linecap="round"/>
-  <circle cx="46" cy="47" r="3.5" fill="#ddebe6"/>
+  <!-- urantia.dev mark B: a lowercase u and the colon of every reference (2:5.1). Flips to amber in dark mode. -->
+  <style>
+    .box { fill: #0f2a2e; } .u { stroke: #fbf8f3; } .colon { fill: #f2b441; }
+    @media (prefers-color-scheme: dark) { .box { fill: #f2b441; } .u { stroke: #0f2a2e; } .colon { fill: #0f2a2e; } }
+  </style>
+  <rect class="box" width="64" height="64" rx="14"/>
+  <path class="u" d="M17 21v13a9.5 9.5 0 0 0 19 0V21" fill="none" stroke-width="6.5" stroke-linecap="round"/>
+  <circle class="colon" cx="47" cy="25" r="4.5"/>
+  <circle class="colon" cx="47" cy="41" r="4.5"/>
 </svg>
