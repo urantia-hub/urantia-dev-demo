@@ -117,7 +117,7 @@ export function QuoteSection() {
             rel="noopener noreferrer"
             className="mt-2 pl-6 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            Read on UrantiaHub ↗
+            Read in context
           </a>
 
           {/* Action buttons */}

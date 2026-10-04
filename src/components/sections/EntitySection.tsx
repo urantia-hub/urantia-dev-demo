@@ -180,7 +180,7 @@ function EntityCard({
                     className="mb-1 inline-block rounded bg-gray-200 px-1.5 py-0.5 text-xs font-medium text-gray-600 hover:bg-primary/10 hover:text-primary transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {p.standardReferenceId} ↗
+                    {p.standardReferenceId}
                   </a>
                   <p className="text-xs leading-relaxed text-gray-600">
                     {truncate(p.text)}

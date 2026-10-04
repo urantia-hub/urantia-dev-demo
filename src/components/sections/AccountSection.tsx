@@ -455,9 +455,10 @@ export function AccountSection() {
           onClick={startSignIn}
           className=" rounded-lg btn-amber px-8 py-3 text-base font-medium transition-colors"
         >
-          Sign in with Urantia
+          Sign in
         </button>
-        <p className="mt-3 text-xs text-gray-400">
+        <p className="mt-3 text-xs text-gray-400">Accounts are shared with UrantiaHub.</p>
+        <p className="mt-1 text-xs text-gray-400">
           Powered by{" "}
           <a
             href="https://www.npmjs.com/package/@urantia/auth"
