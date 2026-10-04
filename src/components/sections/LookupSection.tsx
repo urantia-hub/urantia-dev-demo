@@ -84,7 +84,7 @@ function ParagraphBlock({
           rel="noopener noreferrer"
           className="mt-2 inline-block text-xs font-medium text-primary hover:text-primary/80 transition-colors"
         >
-          Read on UrantiaHub ↗
+          Read in context
         </a>
       )}
     </div>

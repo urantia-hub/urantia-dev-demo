@@ -6,8 +6,8 @@ export function Hero() {
           See the Urantia Papers API in action
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-ink-soft sm:text-xl">
-          Interactive demos powered by the free, open API at urantia.dev.
-          <br className="hidden sm:inline" /> No API key required.
+          Live examples that call the API from your browser.
+          <br className="hidden sm:inline" /> No key needed.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <a href="https://docs.urantia.dev" className="btn-amber inline-flex px-6 py-3 text-sm">
