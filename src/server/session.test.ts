@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isSameOrigin, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
+import { isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
 
 const SECRET = "a-test-secret-that-is-long-enough-0123456789";
 const session: Session = {
@@ -108,4 +108,17 @@ describe("meTarget", () => {
     expect(meTarget(["bookmarks"], "?x=https://evil.example")?.host).toBe("api.urantia.dev");
     expect(meTarget(["//evil.example"], "")?.host ?? "api.urantia.dev").toBe("api.urantia.dev");
   });
+});
+
+// The proxy answers on this site's own origin. An answer that a browser reads as a page can run script here.
+describe("jsonType", () => {
+  it.each(["application/json", "application/json; charset=utf-8", "application/problem+json", "APPLICATION/JSON"])("keeps %s", (type) => {
+    expect(jsonType(type)).toBe(type.toLowerCase().split(";")[0].trim());
+  });
+  it.each(["text/html", "text/html; charset=utf-8", "image/svg+xml", "application/xhtml+xml", "text/plain", "application/json, text/html", "", null])(
+    "answers application/json for %j",
+    (type) => {
+      expect(jsonType(type)).toBe("application/json");
+    },
+  );
 });

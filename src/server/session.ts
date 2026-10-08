@@ -93,3 +93,10 @@ export function meTarget(path: readonly string[], search: string): URL | null {
   if (target.pathname !== "/me" && !target.pathname.startsWith("/me/")) return null;
   return target;
 }
+
+// The content type of a proxied answer. Only a JSON type passes. Anything else is sent as JSON, so a
+// browser never reads an answer of the API as a page on this site's origin.
+export function jsonType(upstream: string | null): string {
+  const type = (upstream ?? "").split(";")[0]?.trim().toLowerCase() ?? "";
+  return /^application\/([a-z0-9.-]+\+)?json$/.test(type) ? type : "application/json";
+}

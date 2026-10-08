@@ -1,5 +1,5 @@
 import { loadSession } from "@/server/auth";
-import { isSameOrigin, meTarget } from "@/server/session";
+import { isSameOrigin, jsonType, meTarget } from "@/server/session";
 
 // The person's own data. The browser calls this address, and this server adds the token.
 // So no token is ever in the browser, where another script can read it.
@@ -30,7 +30,13 @@ async function forward(request: Request, { params }: { params: Promise<{ path?: 
 
   return new Response(upstream.status === 204 ? null : await upstream.text(), {
     status: upstream.status,
-    headers: { "content-type": upstream.headers.get("content-type") ?? "application/json", "cache-control": "no-store" },
+    headers: {
+      "content-type": jsonType(upstream.headers.get("content-type")),
+      // The browser must not guess another type from the body.
+      "x-content-type-options": "nosniff",
+      "content-security-policy": "default-src 'none'",
+      "cache-control": "no-store",
+    },
   });
 }
 
