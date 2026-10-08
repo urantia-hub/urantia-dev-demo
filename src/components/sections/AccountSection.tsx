@@ -1,52 +1,35 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { UrantiaAPI } from "@urantia/api";
 import type { Bookmark, Note, ReadingProgressEntry } from "@urantia/api";
 
-const LOGIN_URL = "https://accounts.urantiahub.com";
-const APP_ID = "demo";
-
-interface Session {
-  user: { id: string; email: string | null; scopes: string[] };
-  accessToken: string;
-  expiresAt: string;
+// The person who is signed in. The tokens stay on the server, in a cookie that scripts cannot read.
+interface User {
+  id: string;
+  email: string | null;
+  scopes: string[];
 }
 
 type Tab = "bookmarks" | "notes" | "progress" | "preferences";
 
-function getSession(): Session | null {
-  if (typeof window === "undefined") return null;
+// The person's data goes through this site's own /api/me, which adds the token on the server.
+const authedApi = new UrantiaAPI({ baseUrl: "/api" });
+
+const SIGN_IN_PROBLEMS: Record<string, string> = {
+  denied: "The sign-in was not allowed.",
+  expired: "The sign-in took too long, or it was started in another browser. Try again.",
+  failed: "The sign-in did not finish. Try again.",
+};
+
+async function fetchUser(): Promise<{ user: User | null; unavailable: boolean }> {
   try {
-    const raw = localStorage.getItem("urantia_auth_session");
-    if (!raw) return null;
-    const session: Session = JSON.parse(raw);
-    if (new Date(session.expiresAt) < new Date()) {
-      localStorage.removeItem("urantia_auth_session");
-      return null;
-    }
-    return session;
+    const res = await fetch("/api/auth/session", { cache: "no-store" });
+    const body = await res.json();
+    return { user: body.user ?? null, unavailable: res.status === 503 };
   } catch {
-    return null;
+    return { user: null, unavailable: true };
   }
-}
-
-async function startSignIn() {
-  const state = crypto.randomUUID();
-  const redirectUri = `${window.location.origin}/callback`;
-
-  // Store state for CSRF verification on callback
-  sessionStorage.setItem("urantia_auth_state", state);
-
-  // No PKCE needed — the demo uses server-side token exchange with app secret
-  const params = new URLSearchParams({
-    app_id: APP_ID,
-    redirect_uri: redirectUri,
-    state,
-    scope: "bookmarks,notes,reading-progress,preferences",
-  });
-
-  window.location.href = `${LOGIN_URL}/login?${params}`;
 }
 
 function truncate(text: string, max = 120): string {
@@ -56,14 +39,13 @@ function truncate(text: string, max = 120): string {
 
 // ─── Bookmarks Tab ───
 
-function BookmarksTab({ token }: { token: string }) {
+function BookmarksTab() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState(true);
   const [ref, setRef] = useState("");
   const [category, setCategory] = useState("");
   const [adding, setAdding] = useState(false);
 
-  const authedApi = useMemo(() => new UrantiaAPI({ token }), [token]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -75,7 +57,7 @@ function BookmarksTab({ token }: { token: string }) {
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     load();
@@ -167,14 +149,13 @@ function BookmarksTab({ token }: { token: string }) {
 
 // ─── Notes Tab ───
 
-function NotesTab({ token }: { token: string }) {
+function NotesTab() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [ref, setRef] = useState("");
   const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
 
-  const authedApi = useMemo(() => new UrantiaAPI({ token }), [token]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -186,7 +167,7 @@ function NotesTab({ token }: { token: string }) {
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     load();
@@ -272,13 +253,12 @@ function NotesTab({ token }: { token: string }) {
 
 // ─── Reading Progress Tab ───
 
-function ProgressTab({ token }: { token: string }) {
+function ProgressTab() {
   const [progress, setProgress] = useState<ReadingProgressEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [refs, setRefs] = useState("");
   const [marking, setMarking] = useState(false);
 
-  const authedApi = useMemo(() => new UrantiaAPI({ token }), [token]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -290,7 +270,7 @@ function ProgressTab({ token }: { token: string }) {
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     load();
@@ -371,13 +351,12 @@ function ProgressTab({ token }: { token: string }) {
 
 // ─── Preferences Tab ───
 
-function PreferencesTab({ token }: { token: string }) {
+function PreferencesTab() {
   const [prefs, setPrefs] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const authedApi = useMemo(() => new UrantiaAPI({ token }), [token]);
 
   useEffect(() => {
     setLoading(true);
@@ -387,7 +366,7 @@ function PreferencesTab({ token }: { token: string }) {
       .catch(() => setPrefs("{}"))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, []);
 
   async function handleSave() {
     setSaving(true);
@@ -428,35 +407,62 @@ function PreferencesTab({ token }: { token: string }) {
 // ─── Main Section ───
 
 export function AccountSection() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("bookmarks");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    setSession(getSession());
+    const problem = new URLSearchParams(window.location.search).get("signin");
+    fetchUser().then(({ user, unavailable }) => {
+      setUser(user);
+      setNotice(
+        unavailable
+          ? "The sign-in service has a problem at the moment. Try again in a minute."
+          : problem
+            ? (SIGN_IN_PROBLEMS[problem] ?? null)
+            : null,
+      );
+      setMounted(true);
+    });
+    // A session from an older version of this demo was kept in the browser. It is not used now.
+    try {
+      localStorage.removeItem("urantia_auth_session");
+    } catch {
+      // Storage is not available.
+    }
   }, []);
 
-  function handleSignOut() {
-    localStorage.removeItem("urantia_auth_session");
-    setSession(null);
+  async function handleSignOut() {
+    setUser(null);
+    try {
+      const res = await fetch("/api/auth/signout", { method: "POST" });
+      const { url } = await res.json();
+      // The accounts site ends its own session too, and sends the browser back here.
+      if (url) window.location.href = url;
+    } catch {
+      // This site's own session is cleared in each case.
+    }
   }
 
   if (!mounted) return null;
 
   // Signed out
-  if (!session) {
+  if (!user) {
     return (
       <div className="text-center py-8">
         <p className="mb-4 text-gray-500">
           Sign in to demo authenticated endpoints: bookmarks, notes, reading progress, and preferences.
         </p>
-        <button
-          onClick={startSignIn}
-          className=" rounded-lg btn-amber px-8 py-3 text-base font-medium transition-colors"
-        >
+        {notice && (
+          <p className="mb-4 text-sm text-red-600" role="alert">
+            {notice}
+          </p>
+        )}
+        {/* A plain link: the server route starts the sign-in and sends the browser on. */}
+        <a href="/api/auth/start" className="inline-block rounded-lg btn-amber px-8 py-3 text-base font-medium transition-colors no-underline">
           Sign in
-        </button>
+        </a>
         <p className="mt-3 text-xs text-gray-400">Accounts are shared with UrantiaHub.</p>
         <p className="mt-1 text-xs text-gray-400">
           Powered by{" "}
@@ -490,7 +496,7 @@ export function AccountSection() {
           <p className="text-sm text-gray-500">
             Signed in as{" "}
             <span className="font-medium text-gray-900">
-              {session.user.email}
+              {user.email}
             </span>
           </p>
         </div>
@@ -520,10 +526,10 @@ export function AccountSection() {
       </div>
 
       {/* Tab content */}
-      {activeTab === "bookmarks" && <BookmarksTab token={session.accessToken} />}
-      {activeTab === "notes" && <NotesTab token={session.accessToken} />}
-      {activeTab === "progress" && <ProgressTab token={session.accessToken} />}
-      {activeTab === "preferences" && <PreferencesTab token={session.accessToken} />}
+      {activeTab === "bookmarks" && <BookmarksTab />}
+      {activeTab === "notes" && <NotesTab />}
+      {activeTab === "progress" && <ProgressTab />}
+      {activeTab === "preferences" && <PreferencesTab />}
     </div>
   );
 }
