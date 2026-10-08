@@ -78,3 +78,18 @@ export function isSameOrigin(request: Request): boolean {
   const origin = request.headers.get("origin");
   return origin !== null && origin === new URL(request.url).origin;
 }
+
+const API_URL = "https://api.urantia.dev";
+
+// The address of the person's own data for a request to /api/me/..., or null for a path that can leave /me.
+// The proxy adds the person's token, so it must not be steered to another part of the API.
+export function meTarget(path: readonly string[], search: string): URL | null {
+  for (const segment of path) {
+    if (segment === "" || segment === "." || segment === ".." || /%2e/i.test(segment)) return null;
+  }
+  const target = new URL(`/me${path.map((segment) => `/${encodeURIComponent(segment)}`).join("")}`, API_URL);
+  target.search = search;
+  if (target.origin !== API_URL) return null;
+  if (target.pathname !== "/me" && !target.pathname.startsWith("/me/")) return null;
+  return target;
+}

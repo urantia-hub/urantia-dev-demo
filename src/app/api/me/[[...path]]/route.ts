@@ -1,7 +1,5 @@
 import { loadSession } from "@/server/auth";
-import { isSameOrigin } from "@/server/session";
-
-const API_URL = "https://api.urantia.dev";
+import { isSameOrigin, meTarget } from "@/server/session";
 
 // The person's own data. The browser calls this address, and this server adds the token.
 // So no token is ever in the browser, where another script can read it.
@@ -11,13 +9,13 @@ async function forward(request: Request, { params }: { params: Promise<{ path?: 
     return Response.json({ detail: "Not allowed." }, { status: 403 });
   }
 
+  const { path = [] } = await params;
+  const target = meTarget(path, new URL(request.url).search);
+  if (!target) return Response.json({ detail: "Not found." }, { status: 404 });
+
   const loaded = await loadSession();
   if (loaded.state === "unavailable") return Response.json({ detail: "The sign-in service has a problem. Try again." }, { status: 503 });
   if (loaded.state === "signed-out") return Response.json({ detail: "Sign in first." }, { status: 401 });
-
-  const { path = [] } = await params;
-  const target = new URL(`/me/${path.map(encodeURIComponent).join("/")}`.replace(/\/$/, ""), API_URL);
-  target.search = new URL(request.url).search;
 
   const hasBody = request.method !== "GET" && request.method !== "DELETE";
   const upstream = await fetch(target, {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isSameOrigin, needsRefresh, readStart, seal, unseal, type Session } from "./session";
+import { isSameOrigin, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
 
 const SECRET = "a-test-secret-that-is-long-enough-0123456789";
 const session: Session = {
@@ -79,5 +79,33 @@ describe("isSameOrigin", () => {
     expect(isSameOrigin(req({}))).toBe(false);
     expect(isSameOrigin(req({ origin: "null" }))).toBe(false);
     expect(isSameOrigin(req({ origin: "https://demo.urantia.dev.evil.example" }))).toBe(false);
+  });
+});
+
+// The proxy adds the person's token. It must reach the person's own data and nothing else.
+describe("meTarget", () => {
+  it("builds the address under /me, with the query", () => {
+    expect(meTarget([], "")?.toString()).toBe("https://api.urantia.dev/me");
+    expect(meTarget(["bookmarks"], "?page=2")?.toString()).toBe("https://api.urantia.dev/me/bookmarks?page=2");
+    expect(meTarget(["bookmarks", "1:0.1"], "")?.toString()).toBe("https://api.urantia.dev/me/bookmarks/1%3A0.1");
+  });
+
+  it.each([
+    [["..", "auth", "apps"]],
+    [["bookmarks", "..", "..", "admin", "stats"]],
+    [["."]],
+    [["%2e%2e", "admin"]],
+    [["bookmarks/../../admin"]],
+    [["bookmarks\\..\\..\\admin"]],
+    [[""]],
+  ])("refuses %j, which can leave /me", (path) => {
+    const target = meTarget(path, "");
+    if (target !== null) expect(target.pathname === "/me" || target.pathname.startsWith("/me/")).toBe(true);
+    if (path.some((p) => p === ".." || p === "." || p === "" || p.toLowerCase().includes("%2e"))) expect(target).toBeNull();
+  });
+
+  it("cannot be sent to another host by the query or by a segment", () => {
+    expect(meTarget(["bookmarks"], "?x=https://evil.example")?.host).toBe("api.urantia.dev");
+    expect(meTarget(["//evil.example"], "")?.host ?? "api.urantia.dev").toBe("api.urantia.dev");
   });
 });
