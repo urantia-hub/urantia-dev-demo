@@ -34,3 +34,17 @@ npx vercel deploy --prod --scope adams-technologies
 The checkout is already linked to the project (`.vercel/`). After a deploy,
 verify state READY on the expected commit via the Vercel MCP
 (`list_deployments`) — a failed build silently keeps the old deployment live.
+
+## Sign-in (since 2026-10-08)
+
+The demo is the reference for a sign-in with a UrantiaHub account from a server. It uses `@urantia/auth/server`.
+
+- The tokens are in a sealed cookie that scripts cannot read (`src/server/session.ts`). The browser never holds a token.
+- `GET /api/auth/start` starts a sign-in. `GET /callback` finishes it, and it is also the return address of a sign-out.
+- `GET /api/auth/session` says who is signed in. `POST /api/auth/signout` ends the sign-in here, on the service, and on the accounts site.
+- The person's data goes through `/api/me/...`, which adds the token on the server and refreshes it when it is near its end.
+- A write must come from this site's own pages (`isSameOrigin`), because the session is a cookie.
+- An outage of the sign-in service does not sign a person out. Only a refusal does.
+- `DEMO_APP_SECRET` is the app secret, and the key of the cookie is made from it. It is a server setting only.
+- `npm test` runs the unit tests. CI runs types, tests, and a build.
+
