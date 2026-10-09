@@ -8,10 +8,6 @@ export const START_COOKIE = "demo_auth_start";
 // Set at a sign-out, removed at the next finished sign-in. While it is there, a sign-in asks the
 // person which account to use: after a sign-out the person is still signed in on the accounts site.
 export const ASK_COOKIE = "demo_ask_account";
-// The body of a sign-out call. The full sign-out also ends the UrantiaHub account session, with a
-// short trip to the accounts site. It is for a computer that other people use.
-export const wantsFullSignOut = (body: unknown): boolean =>
-  typeof body === "object" && body !== null && (body as { everywhere?: unknown }).everywhere === true;
 export const asksAccount = (value: string | undefined): boolean => value === "1";
 // The session lives as long as a refresh token: 90 days from the last use.
 export const SESSION_SECONDS = 90 * 24 * 60 * 60;
