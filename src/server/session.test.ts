@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { signedOutFor } from "./signout-answer";
 import { asksAccount, isFromThisSite, wantsFullSignOut, isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
 
 const SECRET = "a-test-secret-that-is-long-enough-0123456789";
@@ -159,5 +160,19 @@ describe("the kind of a sign-out", () => {
   it("is the full one only when the page asks for it", () => {
     expect(wantsFullSignOut({ everywhere: true })).toBe(true);
     for (const body of [{}, { everywhere: false }, { everywhere: "true" }, null, "x", undefined]) expect(wantsFullSignOut(body)).toBe(false);
+  });
+});
+
+// The page must not say "signed out" when the server did not end the session.
+describe("the answer to a sign-out call", () => {
+  it("is a sign-out only when the server says so", () => {
+    expect(signedOutFor(200, { signedOut: true })).toBe(true);
+  });
+  it("is not a sign-out for a refusal, an error, no answer, or a body that does not say so", () => {
+    expect(signedOutFor(403, { error: "Not allowed." })).toBe(false);
+    expect(signedOutFor(500, { signedOut: true })).toBe(false);
+    expect(signedOutFor(undefined, undefined)).toBe(false);
+    expect(signedOutFor(200, {})).toBe(false);
+    expect(signedOutFor(200, null)).toBe(false);
   });
 });
