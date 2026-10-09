@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { UrantiaAPI } from "@urantia/api";
+import { signedOutFor } from "@/server/signout-answer";
 import type { Bookmark, Note, ReadingProgressEntry } from "@urantia/api";
 
 // The person who is signed in. The tokens stay on the server, in a cookie that scripts cannot read.
@@ -452,18 +453,28 @@ export function AccountSection() {
   // The sign-out stays on this page. The next sign-in asks which account to use.
   // "everywhere" also ends the UrantiaHub account session, with a short trip to the accounts site.
   async function handleSignOut(everywhere = false) {
-    setUser(null);
+    let status: number | undefined;
+    let body: { signedOut?: boolean; url?: string } | null = null;
     try {
       const res = await fetch("/api/auth/signout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ everywhere }),
       });
-      const { url } = await res.json();
-      if (everywhere && url) window.location.href = url;
+      status = res.status;
+      body = await res.json();
     } catch {
-      // The page shows "signed out" in each case. The server cleared its own session if it got the call.
+      // Handled below: with no answer, the person is not signed out.
     }
+    // The page says "signed out" only when the server ended the session.
+    if (!signedOutFor(status, body)) {
+      setNotice("The sign-out did not finish. You are still signed in. Try again.");
+      checkSession();
+      return;
+    }
+    setNotice(null);
+    setUser(null);
+    if (everywhere && body?.url) window.location.href = body.url;
   }
 
   if (!mounted) return null;
