@@ -141,4 +141,3 @@ describe("isFromThisSite", () => {
     expect(isFromThisSite(at({ origin: "https://evil.example" }))).toBe(true);
   });
 });
-});
