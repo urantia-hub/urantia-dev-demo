@@ -14,6 +14,9 @@ interface User {
 type Tab = "bookmarks" | "notes" | "progress" | "preferences";
 
 // The person's data goes through this site's own /api/me, which adds the token on the server.
+// When a call for the person's data fails, the page asks the server if the person is still signed in.
+const SESSION_CHECK = "demo-session-check";
+const checkSession = () => window.dispatchEvent(new Event(SESSION_CHECK));
 const authedApi = new UrantiaAPI({ baseUrl: "/api" });
 
 const SIGN_IN_PROBLEMS: Record<string, string> = {
@@ -53,7 +56,7 @@ function BookmarksTab() {
       const res = await authedApi.me.bookmarks.list();
       setBookmarks(res.data ?? []);
     } catch {
-      /* ignore */
+      checkSession();
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,7 +78,7 @@ function BookmarksTab() {
       setCategory("");
       load();
     } catch {
-      /* ignore */
+      checkSession();
     }
     setAdding(false);
   }
@@ -163,7 +166,7 @@ function NotesTab() {
       const res = await authedApi.me.notes.list();
       setNotes(res.data ?? []);
     } catch {
-      /* ignore */
+      checkSession();
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +185,7 @@ function NotesTab() {
       setText("");
       load();
     } catch {
-      /* ignore */
+      checkSession();
     }
     setAdding(false);
   }
@@ -266,7 +269,7 @@ function ProgressTab() {
       const res = await authedApi.me.readingProgress.get();
       setProgress(res.data ?? []);
     } catch {
-      /* ignore */
+      checkSession();
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -288,7 +291,7 @@ function ProgressTab() {
       setRefs("");
       load();
     } catch {
-      /* ignore */
+      checkSession();
     }
     setMarking(false);
   }
@@ -376,7 +379,7 @@ function PreferencesTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch {
-      /* ignore */
+      checkSession();
     }
     setSaving(false);
   }
@@ -425,12 +428,25 @@ export function AccountSection() {
       );
       setMounted(true);
     });
+    // The person can remove this app on the accounts site, in another tab. This site's server ends the
+    // session at the next call. The page asks again when it gets the focus, and after each failed call.
+    const recheck = () => {
+      fetchUser().then(({ user, unavailable }) => {
+        if (!unavailable) setUser(user);
+      });
+    };
+    window.addEventListener("focus", recheck);
+    window.addEventListener(SESSION_CHECK, recheck);
     // A session from an older version of this demo was kept in the browser. It is not used now.
     try {
       localStorage.removeItem("urantia_auth_session");
     } catch {
       // Storage is not available.
     }
+    return () => {
+      window.removeEventListener("focus", recheck);
+      window.removeEventListener(SESSION_CHECK, recheck);
+    };
   }, []);
 
   async function handleSignOut() {
