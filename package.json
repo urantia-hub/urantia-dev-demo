@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@urantia/api": "^0.4.1",
-    "@urantia/auth": "^0.3.0",
+    "@urantia/auth": "^0.4.0",
     "jose": "^6.2.12",
     "next": "^16.3.1",
     "react": "^19.2.8",

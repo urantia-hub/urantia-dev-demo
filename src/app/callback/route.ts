@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { exchangeCode } from "@urantia/auth/server";
 import { APP_ID, appSecret, redirectUri, saveSession, toSession } from "@/server/auth";
-import { readStart, START_COOKIE } from "@/server/session";
+import { ASK_COOKIE, readStart, START_COOKIE } from "@/server/session";
 
 // Step 2: the sign-in page returns here. Check the state, exchange the code, keep the session.
 // The same address is the return address of a sign-out, which arrives with no code.
@@ -33,7 +33,10 @@ export async function GET(request: NextRequest) {
       appSecret: appSecret(),
     });
     await saveSession(toSession(tokens));
-    return home();
+    // The person signed in again, so the next sign-in does not need the question.
+    const response = home();
+    response.cookies.set(ASK_COOKIE, "", { path: "/", maxAge: 0 });
+    return response;
   } catch {
     return home("failed");
   }

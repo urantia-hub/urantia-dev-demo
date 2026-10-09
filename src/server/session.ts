@@ -5,6 +5,10 @@ import { EncryptJWT, jwtDecrypt } from "jose";
 
 export const SESSION_COOKIE = "demo_session";
 export const START_COOKIE = "demo_auth_start";
+// Set at a sign-out, removed at the next finished sign-in. While it is there, a sign-in asks the
+// person which account to use: after a sign-out the person is still signed in on the accounts site.
+export const ASK_COOKIE = "demo_ask_account";
+export const asksAccount = (value: string | undefined): boolean => value === "1";
 // The session lives as long as a refresh token: 90 days from the last use.
 export const SESSION_SECONDS = 90 * 24 * 60 * 60;
 // Refresh this long before the access token ends.

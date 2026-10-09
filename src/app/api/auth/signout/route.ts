@@ -1,18 +1,18 @@
 import { cookies } from "next/headers";
-import { revokeTokens, signOutUrl } from "@urantia/auth/server";
-import { APP_ID, appSecret, clearSession, redirectUri } from "@/server/auth";
-import { isSameOrigin, SESSION_COOKIE, unseal } from "@/server/session";
+import { revokeTokens } from "@urantia/auth/server";
+import { APP_ID, appSecret, clearSession } from "@/server/auth";
+import { ASK_COOKIE, isSameOrigin, SESSION_COOKIE, unseal } from "@/server/session";
 
-// Step 4: end the sign-in on the service, clear the cookie, and say where the browser goes next.
-// That address ends the UrantiaHub account session too, so the next sign-in is not silent.
+// Step 4: end the sign-in on the service and clear the cookie. The person does not leave this page.
+// The person is still signed in on the accounts site, so the next sign-in asks which account to use.
 export async function POST(request: Request) {
   if (!isSameOrigin(request)) return Response.json({ error: "Not allowed." }, { status: 403 });
 
-  const session = await unseal((await cookies()).get(SESSION_COOKIE)?.value, appSecret());
+  const jar = await cookies();
+  const session = await unseal(jar.get(SESSION_COOKIE)?.value, appSecret());
   await clearSession();
-  const { signOutToken } = session
-    ? await revokeTokens({ appId: APP_ID, refreshToken: session.refreshToken })
-    : { signOutToken: null };
+  jar.set(ASK_COOKIE, "1", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 365 });
+  if (session) await revokeTokens({ appId: APP_ID, refreshToken: session.refreshToken });
 
-  return Response.json({ url: signOutUrl({ appId: APP_ID, returnTo: redirectUri(request), signOutToken }) });
+  return Response.json({ signedOut: true });
 }
