@@ -1,13 +1,14 @@
 import { refreshTokens } from "@urantia/auth/server";
 import { APP_ID, clearSession, loadSession, saveSession, toSession } from "@/server/auth";
 import { callWithSession } from "@/server/me";
-import { isSameOrigin, jsonType, meTarget } from "@/server/session";
+import { isFromThisSite, isSameOrigin, jsonType, meTarget } from "@/server/session";
 
 // The person's own data. The browser calls this address, and this server adds the token.
 // So no token is ever in the browser, where another script can read it.
 async function forward(request: Request, { params }: { params: Promise<{ path?: string[] }> }) {
-  // The session is a cookie. A write must come from a page of this site.
-  if (request.method !== "GET" && !isSameOrigin(request)) {
+  // The session is a cookie, and a call here can end or renew it. So each call, also a read, must come
+  // from a page of this site.
+  if (!isFromThisSite(request) || (request.method !== "GET" && !isSameOrigin(request))) {
     return Response.json({ detail: "Not allowed." }, { status: 403 });
   }
 

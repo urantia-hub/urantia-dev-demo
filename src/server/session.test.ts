@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
+import { isFromThisSite, isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
 
 const SECRET = "a-test-secret-that-is-long-enough-0123456789";
 const session: Session = {
@@ -121,4 +121,24 @@ describe("jsonType", () => {
       expect(jsonType(type)).toBe("application/json");
     },
   );
+});
+
+// A read of the person's data can now end or renew the session. So a page of another site must not
+// be able to start one, also with a plain link or an image tag.
+describe("isFromThisSite", () => {
+  const at = (headers: Record<string, string>) => new Request("https://demo.urantia.dev/api/me/bookmarks", { headers });
+  it("is true for a call from a page of this site", () => {
+    expect(isFromThisSite(at({ "sec-fetch-site": "same-origin" }))).toBe(true);
+  });
+  it("is false for a call or a navigation from another site, and for an address typed by hand", () => {
+    for (const site of ["cross-site", "same-site", "none"]) expect(isFromThisSite(at({ "sec-fetch-site": site }))).toBe(false);
+  });
+  // An old browser sends no such header, so it cannot be told apart. Each browser of today sends it,
+  // and a page cannot remove it, so the check holds where an attack can happen. A write still needs
+  // the Origin header (isSameOrigin).
+  it("lets a request with no such header through", () => {
+    expect(isFromThisSite(at({}))).toBe(true);
+    expect(isFromThisSite(at({ origin: "https://evil.example" }))).toBe(true);
+  });
+});
 });
