@@ -80,11 +80,11 @@ export function isSameOrigin(request: Request): boolean {
 }
 
 // A call to the person's data must come from a page of this site, also a read: a read can end or
-// renew the session. The browser says where a request comes from; without that, the Origin header decides.
+// renew the session. A browser of today says where a request comes from, and a page cannot remove
+// that header. An old browser sends none; then a write still needs the Origin header (isSameOrigin).
 export function isFromThisSite(request: Request): boolean {
   const site = request.headers.get("sec-fetch-site");
-  if (site !== null) return site === "same-origin";
-  return isSameOrigin(request);
+  return site === null || site === "same-origin";
 }
 
 const API_URL = "https://api.urantia.dev";

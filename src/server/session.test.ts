@@ -133,10 +133,12 @@ describe("isFromThisSite", () => {
   it("is false for a call or a navigation from another site, and for an address typed by hand", () => {
     for (const site of ["cross-site", "same-site", "none"]) expect(isFromThisSite(at({ "sec-fetch-site": site }))).toBe(false);
   });
-  // An old browser sends no such header. Then the Origin header decides, and a read with neither is refused.
-  it("falls back to the Origin header, and refuses a request with neither", () => {
-    expect(isFromThisSite(at({ origin: "https://demo.urantia.dev" }))).toBe(true);
-    expect(isFromThisSite(at({ origin: "https://evil.example" }))).toBe(false);
-    expect(isFromThisSite(at({}))).toBe(false);
+  // An old browser sends no such header, so it cannot be told apart. Each browser of today sends it,
+  // and a page cannot remove it, so the check holds where an attack can happen. A write still needs
+  // the Origin header (isSameOrigin).
+  it("lets a request with no such header through", () => {
+    expect(isFromThisSite(at({}))).toBe(true);
+    expect(isFromThisSite(at({ origin: "https://evil.example" }))).toBe(true);
   });
+});
 });
