@@ -515,6 +515,15 @@ export function AccountSection() {
               {user.email}
             </span>
           </p>
+          {/* Where the person sees which apps have access, removes one, or deletes the account. */}
+          <a
+            href="https://accounts.urantiahub.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-block text-sm text-gray-500 underline hover:text-gray-900"
+          >
+            Manage your UrantiaHub account
+          </a>
         </div>
         <button
           onClick={handleSignOut}
