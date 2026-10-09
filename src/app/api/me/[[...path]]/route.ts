@@ -1,4 +1,6 @@
-import { loadSession } from "@/server/auth";
+import { refreshTokens } from "@urantia/auth/server";
+import { APP_ID, clearSession, loadSession, saveSession, toSession } from "@/server/auth";
+import { callWithSession } from "@/server/me";
 import { isSameOrigin, jsonType, meTarget } from "@/server/session";
 
 // The person's own data. The browser calls this address, and this server adds the token.
@@ -18,15 +20,21 @@ async function forward(request: Request, { params }: { params: Promise<{ path?: 
   if (loaded.state === "signed-out") return Response.json({ detail: "Sign in first." }, { status: 401 });
 
   const hasBody = request.method !== "GET" && request.method !== "DELETE";
-  const upstream = await fetch(target, {
-    method: request.method,
-    headers: {
-      Authorization: `Bearer ${loaded.session.accessToken}`,
-      ...(hasBody ? { "Content-Type": "application/json" } : {}),
-    },
-    body: hasBody ? await request.text() : undefined,
-    cache: "no-store",
+  const body = hasBody ? await request.text() : undefined;
+  const called = await callWithSession(loaded.session, {
+    send: (accessToken) =>
+      fetch(target, {
+        method: request.method,
+        headers: { Authorization: `Bearer ${accessToken}`, ...(hasBody ? { "Content-Type": "application/json" } : {}) },
+        body,
+        cache: "no-store",
+      }),
+    refresh: async (session) => toSession(await refreshTokens({ appId: APP_ID, refreshToken: session.refreshToken })),
   });
+  // The API refused the token, and a new one too: the person removed this app, or the sign-in ended.
+  if (called.session === "end") await clearSession();
+  else if (called.session !== "keep") await saveSession(called.session);
+  const upstream = called.response;
 
   return new Response(upstream.status === 204 ? null : await upstream.text(), {
     status: upstream.status,
