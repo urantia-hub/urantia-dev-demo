@@ -450,17 +450,13 @@ export function AccountSection() {
     };
   }, []);
 
-  // The sign-out stays on this page. The next sign-in asks which account to use.
-  // "everywhere" also ends the UrantiaHub account session, with a short trip to the accounts site.
-  async function handleSignOut(everywhere = false) {
+  // The sign-out stays on this page. The next sign-in shows the sign-in page of the accounts site.
+  // The UrantiaHub account itself stays signed in: the person ends that on the account page.
+  async function handleSignOut() {
     let status: number | undefined;
-    let body: { signedOut?: boolean; url?: string } | null = null;
+    let body: { signedOut?: boolean } | null = null;
     try {
-      const res = await fetch("/api/auth/signout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ everywhere }),
-      });
+      const res = await fetch("/api/auth/signout", { method: "POST" });
       status = res.status;
       body = await res.json();
     } catch {
@@ -474,7 +470,6 @@ export function AccountSection() {
     }
     setNotice(null);
     setUser(null);
-    if (everywhere && body?.url) window.location.href = body.url;
   }
 
   if (!mounted) return null;
@@ -540,13 +535,6 @@ export function AccountSection() {
           >
             Manage your UrantiaHub account
           </a>
-          {/* For a computer that other people use: this ends the UrantiaHub account session too. */}
-          <button
-            onClick={() => handleSignOut(true)}
-            className="ml-4 text-sm text-gray-500 underline hover:text-gray-900"
-          >
-            Sign out of UrantiaHub too
-          </button>
         </div>
         <button
           onClick={() => handleSignOut()}

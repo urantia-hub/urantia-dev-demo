@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { signedOutFor } from "./signout-answer";
-import { asksAccount, isFromThisSite, wantsFullSignOut, isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
+import { asksAccount, isFromThisSite, isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
 
 const SECRET = "a-test-secret-that-is-long-enough-0123456789";
 const session: Session = {
@@ -151,15 +151,6 @@ describe("the note of a sign-out", () => {
   });
   it("is absent before a sign-out, and any other value is not a note", () => {
     for (const value of [undefined, "", "0", "true"]) expect(asksAccount(value)).toBe(false);
-  });
-});
-
-// "Sign Out" stays on the page and leaves the UrantiaHub account signed in, as with other sign-in
-// services. On a computer that other people use, the person needs the full sign-out too.
-describe("the kind of a sign-out", () => {
-  it("is the full one only when the page asks for it", () => {
-    expect(wantsFullSignOut({ everywhere: true })).toBe(true);
-    for (const body of [{}, { everywhere: false }, { everywhere: "true" }, null, "x", undefined]) expect(wantsFullSignOut(body)).toBe(false);
   });
 });
 
