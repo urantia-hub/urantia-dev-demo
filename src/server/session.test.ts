@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isFromThisSite, isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
+import { asksAccount, isFromThisSite, isSameOrigin, jsonType, meTarget, needsRefresh, readStart, seal, unseal, type Session } from "./session";
 
 const SECRET = "a-test-secret-that-is-long-enough-0123456789";
 const session: Session = {
@@ -139,5 +139,16 @@ describe("isFromThisSite", () => {
   it("lets a request with no such header through", () => {
     expect(isFromThisSite(at({}))).toBe(true);
     expect(isFromThisSite(at({ origin: "https://evil.example" }))).toBe(true);
+  });
+});
+
+// After a sign-out the person is still signed in on the accounts site. The next sign-in must ask
+// which account to use, until a sign-in is finished.
+describe("the note of a sign-out", () => {
+  it("makes the next sign-in ask which account", () => {
+    expect(asksAccount("1")).toBe(true);
+  });
+  it("is absent before a sign-out, and any other value is not a note", () => {
+    for (const value of [undefined, "", "0", "true"]) expect(asksAccount(value)).toBe(false);
   });
 });

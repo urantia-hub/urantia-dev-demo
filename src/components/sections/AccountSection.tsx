@@ -449,15 +449,13 @@ export function AccountSection() {
     };
   }, []);
 
+  // The sign-out stays on this page. The next sign-in asks which account to use.
   async function handleSignOut() {
     setUser(null);
     try {
-      const res = await fetch("/api/auth/signout", { method: "POST" });
-      const { url } = await res.json();
-      // The accounts site ends its own session too, and sends the browser back here.
-      if (url) window.location.href = url;
+      await fetch("/api/auth/signout", { method: "POST" });
     } catch {
-      // This site's own session is cleared in each case.
+      // The page shows "signed out" in each case. The server cleared its own session if it got the call.
     }
   }
 
