@@ -41,7 +41,7 @@ The demo is the reference for a sign-in with a UrantiaHub account from a server.
 
 - The tokens are in a sealed cookie that scripts cannot read (`src/server/session.ts`). The browser never holds a token.
 - `GET /api/auth/start` starts a sign-in. `GET /callback` finishes it, and it is also the return address of a sign-out.
-- `GET /api/auth/session` says who is signed in. `POST /api/auth/signout` ends the sign-in here, on the service, and on the accounts site.
+- `GET /api/auth/session` says who is signed in. `POST /api/auth/signout` ends the sign-in here and on the service, with no redirect. It does not end the session of the accounts site: an outside app cannot do that (Kelson, 2026-10-08). The next sign-in asks the accounts site for its sign-in page (`prompt=select_account`). "Manage your UrantiaHub account" links to the account page.
 - The person's data goes through `/api/me/...`, which adds the token on the server and refreshes it when it is near its end.
 - A write must come from this site's own pages (`isSameOrigin`), because the session is a cookie.
 - An outage of the sign-in service does not sign a person out. Only a refusal does.
