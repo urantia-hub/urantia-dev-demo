@@ -10,12 +10,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@urantia/api": "^0.4.1",
-    "@urantia/auth": "^0.4.0",
-    "jose": "^6.2.12",
-    "next": "^16.3.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@urantia/api": "^0.9.0",
+    "@urantia/auth": "^0.4.1",
+    "jose": "^6.2.13",
+    "next": "^16.4.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -23,7 +23,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "^16.3.1",
+    "eslint-config-next": "^16.4.3",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^3.2.7"
